@@ -17,6 +17,7 @@
   "dependencies": {
     "koa": "^1.2.0",
     "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
     "random-words": "0.0.1",
     "shelljs": "^0.7.0",
     "superagent": "^1.8.3"

@@ -30,7 +30,7 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems : 'center',
-    backgroundColor: '#5151f4',
+    backgroundColor: '#fff',
     padding: 10
   },
 

@@ -17,9 +17,12 @@ import {
 
 import naviStyle from '../../common/navigatorStyle';
 
-var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 
-export default class Register extends Component {
+// var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+const REQUEST_URL = 'http://m.me/dialogs/';
+
+var lastId = null;
+export default class MainList extends Component {
 
   static navigatorStyle = naviStyle;
 
@@ -34,15 +37,17 @@ export default class Register extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    // this.fetchData();
   }
 
   fetchData() {
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
+        lastId = responseData.dialogs[responseData.dialogs.length - 1].id;
+        responseData.dialogs.forEach((d)=>{d.isLastChild = (d.id == lastId) });
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.dialogs),
           loaded: true,
         });
       })
@@ -50,43 +55,25 @@ export default class Register extends Component {
   }
 
   render() {
+
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
 
-    return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderMovie}
-        style={styles.listView}
-      />
-    );
+    console.log(this.props);
+
   }
 
   renderLoadingView() {
     return (
       <View style={styles.container}>
         <Text>
-          Loading movies...
+          这是聊天界面！
         </Text>
       </View>
     );
   }
 
-  renderMovie(movie) {
-    return (
-      <View style={styles.container}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={styles.thumbnail}
-        />
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{movie.title}</Text>
-          <Text style={styles.year}>{movie.year}</Text>
-        </View>
-      </View>
-    );
-  }
 }
 
 var styles = StyleSheet.create({
@@ -95,7 +82,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   rightContainer: {
     flex: 1,
@@ -113,8 +100,8 @@ var styles = StyleSheet.create({
     height: 81,
   },
   listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFF',
+    overflow:'hidden',
   },
 });
 

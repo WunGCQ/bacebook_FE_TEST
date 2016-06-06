@@ -15,9 +15,15 @@ import {
   View,
 } from 'react-native';
 
-var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+import naviStyle from '../../common/navigatorStyle';
+
+// var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+const REQUEST_URL = 'http://m.me/dialogs/';
 
 export default class MainList extends Component {
+
+  static navigatorStyle = naviStyle;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +43,7 @@ export default class MainList extends Component {
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.dialogs),
           loaded: true,
         });
       })
@@ -64,6 +70,21 @@ export default class MainList extends Component {
         <Text>
           Loading movies...
         </Text>
+      </View>
+    );
+  }
+
+  renderMovie(movie) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{uri: movie.posters.thumbnail}}
+          style={styles.thumbnail}
+        />
+        <View style={styles.rightContainer}>
+          <Text style={styles.title}>{movie.title}</Text>
+          <Text style={styles.year}>{movie.year}</Text>
+        </View>
       </View>
     );
   }

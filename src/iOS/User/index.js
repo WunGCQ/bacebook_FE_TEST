@@ -18,10 +18,14 @@ import {
 } from 'react-native';
 
 import COLORS from '../../common/colors';
+import naviStyle from '../../common/navigatorStyle';
 
 const avatarURL = '../../../img/intro-wifi-img-01.png';
 
 export default class UserCenter extends Component {
+
+  static navigatorStyle = naviStyle;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +46,8 @@ export default class UserCenter extends Component {
       .then((responseData) => {
         this.setState({
           data: {
-            username: responseData.username,
-            avatar: responseData.avatar,
+            username: responseData.me.username,
+            avatar: responseData.me.avatar,
           },
           loaded: true,
         });
@@ -96,11 +100,13 @@ var STYLES = StyleSheet.create({
   top_user_block: {
 
     flexWrap: 'wrap',
-    backgroundColor: COLORS.ACTIVE_ICON_BG_COLOR,
+    // backgroundColor: COLORS.ACTIVE_ICON_BG_COLOR,
     // backgroundColor: '#ccc',
     height: 150,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: COLORS.COMMON_GRAY,
+    borderBottomWidth: 0.5,
     // textAlign: 'center',
   },
   avatar_wrapper: {
@@ -108,7 +114,8 @@ var STYLES = StyleSheet.create({
     height: 80,
     overflow: 'hidden',
     borderRadius: 50,
-    backgroundColor: '#ccc',
+    borderColor: COLORS.COMMON_GRAY,
+    borderWidth: 0.5,
   },
   avatar:{
     height: 80,
@@ -121,6 +128,7 @@ var STYLES = StyleSheet.create({
   user_name: {
     lineHeight: 24,
     fontSize: 16,
+    color: COLORS.COMMON_GRAY,
   },
 
 

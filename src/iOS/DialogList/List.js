@@ -16,10 +16,13 @@ import {
 } from 'react-native';
 
 import naviStyle from '../../common/navigatorStyle';
+import DialogListCell from './DialogCell';
 
-var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+// var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+const REQUEST_URL = 'http://m.me/dialogs/';
 
-export default class Register extends Component {
+var lastId = null;
+export default class MainList extends Component {
 
   static navigatorStyle = naviStyle;
 
@@ -41,8 +44,10 @@ export default class Register extends Component {
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
+        lastId = responseData.dialogs[responseData.dialogs.length - 1].id;
+        responseData.dialogs.forEach((d)=>{d.isLastChild = (d.id == lastId) });
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.dialogs),
           loaded: true,
         });
       })
@@ -50,14 +55,16 @@ export default class Register extends Component {
   }
 
   render() {
+
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
 
+    console.log(this.props);
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={this.renderMovie}
+        renderRow={this.renderDialogCell.bind(this)}
         style={styles.listView}
       />
     );
@@ -67,25 +74,31 @@ export default class Register extends Component {
     return (
       <View style={styles.container}>
         <Text>
-          Loading movies...
+          加载中，请稍后...
         </Text>
       </View>
     );
   }
 
-  renderMovie(movie) {
+
+
+  renderDialogCell(dialog) {
+    console.log(this.state);
     return (
-      <View style={styles.container}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={styles.thumbnail}
-        />
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{movie.title}</Text>
-          <Text style={styles.year}>{movie.year}</Text>
-        </View>
-      </View>
+      <DialogListCell
+        onSelect={this.goDialogView.bind(this,dialog)}
+        dialog={dialog}
+        lastChild={dialog.isLastChild}/>
     );
+  }
+
+  goDialogView(dialog){
+    // console.log(data);
+    console.log(dialog)
+    this.props.navigator.push({
+      screen: 'User.Register',
+      title: 'Pushed Screen'
+    });
   }
 }
 
@@ -95,7 +108,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   rightContainer: {
     flex: 1,
@@ -113,8 +126,8 @@ var styles = StyleSheet.create({
     height: 81,
   },
   listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFF',
+    overflow:'hidden',
   },
 });
 
