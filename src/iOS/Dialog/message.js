@@ -53,19 +53,21 @@ export default class DialogSingle extends Component {
   }
 
   content(M){
-    if(M.contentType== 'text'){
+    if(M.contentType == 'text'){
       return (
         <View style={S.text_wrapper}>
           <Text style={S.text}>{M.content}</Text>
         </View>
       )
     }else {
-      <View style={S.img_wrapper}>
-        <Image
-          style={S.img}
-          source={{uri: M.content}}
-        />
-      </View>
+      return (
+        <View style={S.img_wrapper}>
+          <Image
+            style={S.img}
+            source={{uri: M.content}}
+          />
+        </View>
+      )
     }
   }
 
@@ -85,30 +87,71 @@ var S = StyleSheet.create({
     backgroundColor: '#fff',
   },
   left: {
-    flex : 1,
-    width: 20,
+    // flex : 1,
+    width: 55,
+    alignSelf: 'flex-start',
   },
   right: {
-    flex: 2,
-    position: 'relative',
-    alignSelf: 'stretch',
+    flex: 1,
+    marginRight: 75,
+    // position: 'relative',
+    alignSelf: 'flex-start',
+    // backgroundColor: '#000',
+  },
+  avatar_wrapper: {
+    width : 35,
+    height: 35,
+    marginLeft: 10,
+    overflow: 'hidden',
+    borderRadius: 1,
+  },
+  avatar : {
+    width: 35,
+    height: 35,
+
   },
   text_wrapper: {
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 6,
-    paddingBottom: 8,
+    flex:1,
+    overflow: 'hidden',
     borderRadius: 4,
+    alignSelf: 'flex-start',
     backgroundColor: COLORS.GREEN,
   },
   text: {
-    fontSize: 12,
-    lineHeight: 16,
-  }
+    flex:1,
+    fontSize: 13,
+    lineHeight: 18,
+    marginLeft: 10,
+    marginRight: 8,
+    marginTop: 7,
+    marginBottom: 9,
+    alignSelf: 'stretch',
+  },
 
+  img_wrapper:{
+    flex:1,
+    // width: 200,
+    // height: 200,
+    // overflow: 'hidden',
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.GREEN,
+  },
 
-
-
+  img: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
+    // height: 200,
+    flex:1,
+    fontSize: 13,
+    lineHeight: 18,
+    marginLeft: 10,
+    marginRight: 8,
+    marginTop: 7,
+    marginBottom: 9,
+    alignSelf: 'stretch',
+  },
 });
 
 // AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
