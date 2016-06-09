@@ -96,8 +96,8 @@ export default class MainList extends Component {
     // console.log(data);
     console.log(dialog)
     this.props.navigator.push({
-      screen: 'User.Register',
-      title: 'Pushed Screen'
+      screen: 'Main.Dialog.Single',
+      title: dialog.from.username,
     });
   }
 }

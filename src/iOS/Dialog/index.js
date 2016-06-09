@@ -15,14 +15,16 @@ import {
   View,
 } from 'react-native';
 
+import Dimensions from 'Dimensions';
 import naviStyle from '../../common/navigatorStyle';
+import Message from './message';
 
 
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = 'http://m.me/dialogs/';
+const REQUEST_URL = 'http://m.me/dialog/';
 
 var lastId = null;
-export default class MainList extends Component {
+export default class DialogSingle extends Component {
 
   static navigatorStyle = naviStyle;
 
@@ -37,40 +39,51 @@ export default class MainList extends Component {
   }
 
   componentDidMount() {
-    // this.fetchData();
+    this.fetchData();
   }
 
   fetchData() {
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
-        lastId = responseData.dialogs[responseData.dialogs.length - 1].id;
-        responseData.dialogs.forEach((d)=>{d.isLastChild = (d.id == lastId) });
+        console.log(responseData.messages);
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.dialogs),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.messages),
+          users: responseData.users,
           loaded: true,
         });
       })
       .done();
   }
 
-  render() {
-
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
-    }
-
-    console.log(this.props);
-
-  }
-
   renderLoadingView() {
     return (
       <View style={styles.container}>
         <Text>
-          这是聊天界面！
+          加载中，请稍后...
         </Text>
       </View>
+    );
+  }
+
+  render() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }else{
+      return (
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderMessage.bind(this)}
+          style={styles.listView}
+        />
+      )
+    }
+
+  }
+
+  renderMessage(M) {
+    return (
+      <Message {...M} user={this.state.users[M.from]} ></Message>
     );
   }
 
@@ -80,12 +93,10 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: Dimensions.get('window').width,
     backgroundColor: '#fff',
-  },
-  rightContainer: {
-    flex: 1,
   },
   title: {
     fontSize: 20,
@@ -100,6 +111,7 @@ var styles = StyleSheet.create({
     height: 81,
   },
   listView: {
+    width: Dimensions.get('window').width,
     backgroundColor: '#FFF',
     overflow:'hidden',
   },
