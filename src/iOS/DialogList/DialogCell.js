@@ -16,7 +16,6 @@ import COLORS from '../../common/colors';
 export default class DialogListCell extends Component {
   render(){
     const D = this.props.dialog;
-    console.log(this.props);
     return (
       <TouchableHighlight onPress={this.props.onSelect} underlayColor={COLORS.COMMON_GRAY}>
         <View style={this.props.lastChild?styles.lastChild:styles.container} onPress={()=>this.goDialogView}>

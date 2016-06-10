@@ -4,5 +4,6 @@ export default {
   INACTIVE_COLOR: '#707275',
   NAVBAR_BG_COLOR: '#efefef',
   COMMON_GRAY: '#c4c3c9',
-  GREEN : '#2bae00',
+  DARK_GRAY: '#808289',
+  GREEN : '#a1ea59',
 }

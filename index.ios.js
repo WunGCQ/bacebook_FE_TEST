@@ -5,6 +5,14 @@ import COLORS from './src/common/colors';
 
 registerScreens(); // this is where you register all of your app's screens
 
+(()=>{
+  fetch('http://m.me/user')
+    .then((response) => response.json())
+    .then((responseData) => {
+      global.SELF = responseData.me;
+    })
+    .done();
+})();
 // start the app
 Navigation.startTabBasedApp({
   tabs: [

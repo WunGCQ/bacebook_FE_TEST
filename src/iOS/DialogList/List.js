@@ -83,7 +83,6 @@ export default class MainList extends Component {
 
 
   renderDialogCell(dialog) {
-    console.log(this.state);
     return (
       <DialogListCell
         onSelect={this.goDialogView.bind(this,dialog)}
@@ -126,8 +125,11 @@ var styles = StyleSheet.create({
     height: 81,
   },
   listView: {
+    flex: 1,
     backgroundColor: '#FFF',
-    overflow:'hidden',
+    overflow:'visible',
+    height: 587,
+    // alignSelf: 'stretch',
   },
 });
 

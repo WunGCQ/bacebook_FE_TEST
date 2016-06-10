@@ -17,7 +17,9 @@ import {
 
 import Dimensions from 'Dimensions';
 import naviStyle from '../../common/navigatorStyle';
+import bgImg from '../../common/bg';
 import Message from './message';
+import MessageInputWrapper from './messageInputWrapper';
 
 
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
@@ -71,14 +73,17 @@ export default class DialogSingle extends Component {
       return this.renderLoadingView();
     }else{
       return (
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderMessage.bind(this)}
-          style={styles.listView}
-        />
+        <View>
+          <Image source={bgImg.DEFAULT} style={styles.bg}/>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderMessage.bind(this)}
+            style={styles.listView}
+          />
+          <MessageInputWrapper/>
+        </View>
       )
     }
-
   }
 
   renderMessage(M) {
@@ -92,11 +97,17 @@ export default class DialogSingle extends Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    position:'relative',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     width: Dimensions.get('window').width,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
+  },
+  bg: {
+    flex: 1,
+    position: 'absolute',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
@@ -111,9 +122,12 @@ var styles = StyleSheet.create({
     height: 81,
   },
   listView: {
+    flex: 1,
     width: Dimensions.get('window').width,
-    backgroundColor: '#FFF',
-    overflow:'hidden',
+    backgroundColor: 'transparent',
+    height: Dimensions.get('window').height - 125 - 42,
+    // overflow:'hidden',
+    // alignSelf: 'stretch',
   },
 });
 
