@@ -19,6 +19,7 @@ import {
 
 import COLORS from '../../common/colors';
 import naviStyle from '../../common/navigatorStyle';
+var config = require('../../../config.js');
 
 const avatarURL = '../../../img/intro-wifi-img-01.png';
 
@@ -41,7 +42,7 @@ export default class UserCenter extends Component {
   }
 
   fetchUserData() {
-    fetch('http://m.me/user')
+    fetch(config.rootUrl+'/user')
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
