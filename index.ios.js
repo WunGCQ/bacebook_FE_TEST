@@ -3,11 +3,12 @@ import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './src/screens';
 import ICONS from './src/common/icons';
 import COLORS from './src/common/colors';
+var config = require('../../../config.js');
 
 registerScreens(); // this is where you register all of your app's screens
 
 (()=>{
-  fetch('http://m.me/user')
+  fetch(config.rootUrl+'/user')
     .then((response) => response.json())
     .then((responseData) => {
       global.SELF = responseData.me;

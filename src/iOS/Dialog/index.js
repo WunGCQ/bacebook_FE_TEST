@@ -22,9 +22,10 @@ import bgImg from '../../common/bg';
 import Message from './message';
 import MessageInputWrapper from './messageInputWrapper';
 
+var config = require('../../../config.js');
 
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = 'http://m.me/dialog/';
+const REQUEST_URL = config.rootUrl+'/dialog';
 
 var lastId = null;
 export default class DialogSingle extends Component {
