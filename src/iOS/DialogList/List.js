@@ -18,8 +18,10 @@ import {
 import naviStyle from '../../common/navigatorStyle';
 import DialogListCell from './DialogCell';
 
+var config = require('../../../config.js');
+
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = 'http://m.me/dialogs/';
+const REQUEST_URL = config.rootUrl+'/dialogs/';
 
 var lastId = null;
 export default class MainList extends Component {

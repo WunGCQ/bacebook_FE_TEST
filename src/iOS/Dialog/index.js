@@ -24,11 +24,16 @@ import naviStyle from '../../common/navigatorStyle';
 import bgImg from '../../common/bg';
 import Message from './message';
 import MessageInputWrapper from './messageInputWrapper';
+import config from '../../../config.js';
 import KeyboardEvents from 'react-native-keyboardevents';
 var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
+
+
+
+
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = 'http://m.me/dialog/';
+const REQUEST_URL = config.rootUrl+'/dialog';
 
 var lastId = null;
 export default class DialogSingle extends Component {
