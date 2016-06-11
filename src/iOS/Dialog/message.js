@@ -243,7 +243,7 @@ var meStyle = {
     position: 'absolute',
     width: 18,
     height: 18,
-    right: -8,
+    right: -10,
     top: 7,
   },
   avatar_wrapper: {

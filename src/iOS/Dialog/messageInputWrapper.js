@@ -19,7 +19,33 @@ import Dimensions from 'Dimensions';
 import naviStyle from '../../common/navigatorStyle';
 import COLORS from '../../common/colors';
 import ICONS from '../../common/icons';
+import ImagePicker from 'react-native-image-picker';
 
+const PICK_IMAGE_OPTION = {
+  title: '选择图片', // specify null or empty string to remove the title
+  cancelButtonTitle: '取消',
+  takePhotoButtonTitle: '拍照', // specify null or empty string to remove this button
+  chooseFromLibraryButtonTitle: '从照片库选取', // specify null or empty string to remove this button
+  customButtons: {
+    'Choose Photo from Facebook': 'fb', // [Button Text] : [String returned upon selection]
+  },
+  cameraType: 'back', // 'front' or 'back'
+  mediaType: 'photo', // 'photo' or 'video'
+  videoQuality: 'high', // 'low', 'medium', or 'high'
+  durationLimit: 10, // video recording max time in seconds
+  maxWidth: 100, // photos only
+  maxHeight: 100, // photos only
+  aspectX: 2, // android only - aspectX:aspectY, the cropping image's ratio of width to height
+  aspectY: 1, // android only - aspectX:aspectY, the cropping image's ratio of width to height
+  quality: 0.2, // 0 to 1, photos only
+  angle: 0, // android only, photos only
+  allowsEditing: false, // Built in functionality to resize/reposition the image after selection
+  noData: false, // photos only - disables the base64 `data` field from being generated (greatly improves performance on large photos)
+  storageOptions: { // if this key is provided, the image will get saved in the documents directory on ios, and the pictures directory on android (rather than a temporary directory)
+    skipBackup: true, // ios only - image will NOT be backed up to icloud
+    path: 'images' // ios only - will save image at /Documents/images rather than the root
+  }
+};
 
 export default class DialogSingle extends Component {
 
@@ -40,11 +66,14 @@ export default class DialogSingle extends Component {
         <TextInput
           {...this.state.theme}
           onFocus={this.setTheme.bind(this,'input_focus')}
-          onBlur={this.setTheme.bind(this,'input_blur')}/>
-        <TouchableHighlight style={S.send_btn}>
+          onBlur={this.setTheme.bind(this,'input_blur')}
+          onChangeText={this.props.onChangeText}
+          value={this.props.text}
+          />
+        <TouchableHighlight style={S.send_btn} onPress={this.props.sendText}>
           <Text style={S.send_btn_text}>{'发送'}</Text>
         </TouchableHighlight>
-        <TouchableHighlight style={S.send_pic_btn}>
+        <TouchableHighlight style={S.send_pic_btn} onPress={this.pickImage.bind(this)}>
           <Image source={ICONS.Dialog.BUTTON.IMAGE} style={S.send_pic_btn_img}/>
         </TouchableHighlight>
       </View>
@@ -57,6 +86,39 @@ export default class DialogSingle extends Component {
     }})
   }
 
+  pickImage(){
+    ImagePicker.showImagePicker(PICK_IMAGE_OPTION, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        // You can display the image using either data:
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+
+        // uri (on iOS)
+        // const source = {uri: response.uri.replace('file://', ''), isStatic: true};
+        // uri (on android)
+        // const source = {uri: response.uri, isStatic: true};
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
+  }
+
+
+  sendText(){
+    this.props.sendText();
+  }
 
 }
 

@@ -10,6 +10,7 @@ import {
   AppRegistry,
   Image,
   ListView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -36,12 +37,15 @@ export default class DialogSingle extends Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
+      text:'',
+      image: null,
       loaded: false,
     };
   }
 
   componentDidMount() {
     this.fetchData();
+
   }
 
   fetchData() {
@@ -54,6 +58,10 @@ export default class DialogSingle extends Component {
           users: responseData.users,
           loaded: true,
         });
+
+        this.refs.scrollView.scrollTo({y:200});
+        // console.log(this.refs.scrollView);
+        // alert(this.refs.scrollView.scrollProperties.contentLength);
       })
       .done();
   }
@@ -79,6 +87,7 @@ export default class DialogSingle extends Component {
             dataSource={this.state.dataSource}
             renderRow={this.renderMessage.bind(this)}
             style={styles.listView}
+            ref='scrollView'
           />
           <MessageInputWrapper/>
         </View>
@@ -88,8 +97,39 @@ export default class DialogSingle extends Component {
 
   renderMessage(M) {
     return (
-      <Message {...M} user={this.state.users[M.from]} ></Message>
+      <Message
+        {...M}
+        user={this.state.users[M.from]}
+        sendText={this.sendText.bind(this)}
+        />
     );
+  }
+
+  setText(text){
+    this.setState({text:text});
+  }
+
+  sendRequest(text){
+    fetch('http://m.me/message',{
+      method:'POST',
+      body:JSON.stringify({text:text})
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          text:''
+        });
+        this.scrollTo({y:0});
+      })
+      .done();
+  }
+
+  sendText(){
+    this.sendRequest(this.state.text);
+  }
+
+  sendImage(){
+
   }
 
 }

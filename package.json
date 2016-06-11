@@ -5,16 +5,19 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "fake_server_init": "cd fake_back_end && npm install",
-    "backend": "cd fake_back_end && npm run dev"
+    "backend": "cd fake_back_end && npm run dev",
+    "ios": "react-native run-ios"
   },
   "dependencies": {
     "babel-cli": "^6.8.0",
     "react": "^0.14.8",
     "react-native": "^0.23.1",
     "react-native-controllers": "^1.3.10",
-    "react-native-image-picker": "^0.18.12",
+    "react-native-image-picker": "^0.19.2",
     "react-native-navigation": "^0.2.5",
     "react-native-storage": "^0.1.0",
-    "react-native-vector-icons": "^2.0.2"
+    "react-native-vector-icons": "^2.0.2",
+    "redux": "^3.5.2",
+    "undefined": "^0.1.0"
   }
 }

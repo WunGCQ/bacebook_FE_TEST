@@ -1,4 +1,5 @@
 import { Navigation } from 'react-native-navigation';
+
 import { registerScreens } from './src/screens';
 import ICONS from './src/common/icons';
 import COLORS from './src/common/colors';
