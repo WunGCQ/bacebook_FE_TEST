@@ -14,14 +14,18 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
+  Animated,
+  Platform,
+  PixelRatio,
 } from 'react-native';
 
-import Dimensions from 'Dimensions';
 import naviStyle from '../../common/navigatorStyle';
 import bgImg from '../../common/bg';
 import Message from './message';
 import MessageInputWrapper from './messageInputWrapper';
-
+import KeyboardEvents from 'react-native-keyboardevents';
+var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 const REQUEST_URL = 'http://m.me/dialog/';
@@ -40,11 +44,37 @@ export default class DialogSingle extends Component {
       text:'',
       image: null,
       loaded: false,
+      typing: false,
+      layout: null,
     };
+  }
+
+  scrollToBottom(animated = null) {
+    if (this._listHeight && this._footerY && this._footerY > this._listHeight) {
+      let scrollDistance = this._listHeight - this._footerY;
+      if (this.props.typingMessage) {
+        scrollDistance -= 44;
+      }
+
+      this.scrollResponder.scrollTo({
+        y: -scrollDistance,
+        x: 0,
+        animated: typeof animated === 'boolean' ? animated : this.props.scrollAnimated,
+      });
+    }
   }
 
   componentDidMount() {
     this.fetchData();
+    KeyboardEventEmitter.on(KeyboardEvents.KeyboardWillShowEvent, (frames) => {
+      this.setState({typing:true});
+    });
+    // KeyboardEventEmitter.on(KeyboardEvents.KeyboardDidShowEvent, (frames) => {
+    //   alert('will show');
+    // });
+    KeyboardEventEmitter.on(KeyboardEvents.KeyboardDidHideEvent, (frames) => {
+      this.setState({typing:false});
+    });
 
   }
 
@@ -54,12 +84,13 @@ export default class DialogSingle extends Component {
       .then((responseData) => {
         console.log(responseData.messages);
         this.setState({
+          originData: responseData.messages,
           dataSource: this.state.dataSource.cloneWithRows(responseData.messages),
           users: responseData.users,
           loaded: true,
         });
 
-        this.refs.scrollView.scrollTo({y:200});
+        // this.refs.scrollView.scrollToTop();
         // console.log(this.refs.scrollView);
         // alert(this.refs.scrollView.scrollProperties.contentLength);
       })
@@ -68,10 +99,8 @@ export default class DialogSingle extends Component {
 
   renderLoadingView() {
     return (
-      <View style={styles.container}>
-        <Text>
-          加载中，请稍后...
-        </Text>
+      <View >
+        <Image source={bgImg.DEFAULT} style={styles.bg}/>
       </View>
     );
   }
@@ -81,18 +110,30 @@ export default class DialogSingle extends Component {
       return this.renderLoadingView();
     }else{
       return (
-        <View>
+        <View >
           <Image source={bgImg.DEFAULT} style={styles.bg}/>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderMessage.bind(this)}
-            style={styles.listView}
+            onLayout={this.setHeight.bind(this)}
+            style={!this.state.typing?styles.listView:styles.listViewTyping}
             ref='scrollView'
           />
-          <MessageInputWrapper/>
+          <MessageInputWrapper
+            sendText={this.sendText.bind(this)}
+            setText={this.setText.bind(this)}
+            value={this.state.text}
+            />
         </View>
       )
     }
+  }
+
+  setHeight(e){
+    var {x, y, width, height} = e.nativeEvent.layout;
+    var h = Dimensions.get('window').height - 125 - 70 - (!this.state.typing? 210: 0);
+    this.setState({layout:e.nativeEvent.layout});
+    this.refs.scrollView.scrollTo({y:h,animated: false});
   }
 
   renderMessage(M) {
@@ -100,7 +141,6 @@ export default class DialogSingle extends Component {
       <Message
         {...M}
         user={this.state.users[M.from]}
-        sendText={this.sendText.bind(this)}
         />
     );
   }
@@ -125,10 +165,33 @@ export default class DialogSingle extends Component {
   }
 
   sendText(){
-    this.sendRequest(this.state.text);
-  }
+    if(this.state.text.length > 0){
+      // alert(`send text : ${this.state.text}`);
+      this.addMessage();
+    }else {
+      alert('请输入内容！');
+    }
+    // this.sendRequest(this.state.text);
+   }
 
   sendImage(){
+
+  }
+
+  addMessage(text=this.state.text){
+    var obj = {
+      from: global.SELF.id,
+      contentType: 'text',
+      content: text,
+      time: new Date().getTime(),
+    };
+    var messages = this.state.originData.concat();
+    messages.push(obj);
+    this.setState({
+      originData: messages,
+      dataSource: this.state.dataSource.cloneWithRows(messages),
+      text: '',
+    });
 
   }
 
@@ -166,6 +229,14 @@ var styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     backgroundColor: 'transparent',
     height: Dimensions.get('window').height - 125 - 42,
+    // overflow:'hidden',
+    // alignSelf: 'stretch',
+  },
+  listViewTyping: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    backgroundColor: 'transparent',
+    height: Dimensions.get('window').height - 125 - 42 - 210,
     // overflow:'hidden',
     // alignSelf: 'stretch',
   },

@@ -13,13 +13,19 @@ import {
   Text,
   View,
   TouchableHighlight,
+  Dimensions,
+  Animated,
+  Platform,
+  PixelRatio,
+
 } from 'react-native';
 
-import Dimensions from 'Dimensions';
 import naviStyle from '../../common/navigatorStyle';
 import COLORS from '../../common/colors';
 import ICONS from '../../common/icons';
 import ImagePicker from 'react-native-image-picker';
+
+
 
 const PICK_IMAGE_OPTION = {
   title: '选择图片', // specify null or empty string to remove the title
@@ -59,7 +65,6 @@ export default class DialogSingle extends Component {
   }
 
 
-
   render() {
     return (
       <View style={S.input_wrapper}>
@@ -67,8 +72,12 @@ export default class DialogSingle extends Component {
           {...this.state.theme}
           onFocus={this.setTheme.bind(this,'input_focus')}
           onBlur={this.setTheme.bind(this,'input_blur')}
-          onChangeText={this.props.onChangeText}
-          value={this.props.text}
+          onChangeText={this.props.setText}
+          keyboardType='default'
+          keyboardAppearance='default'
+          onSubmitEditing={this.props.sendText}
+          returnKeyType={'send'}
+          value={this.props.value}
           />
         <TouchableHighlight style={S.send_btn} onPress={this.props.sendText}>
           <Text style={S.send_btn_text}>{'发送'}</Text>
@@ -119,6 +128,8 @@ export default class DialogSingle extends Component {
   sendText(){
     this.props.sendText();
   }
+
+
 
 }
 
