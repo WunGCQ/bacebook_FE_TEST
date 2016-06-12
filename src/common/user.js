@@ -1,20 +1,27 @@
-import storage from './storage';
+import {setItem, getItem} from './storage';
+import Navigation from 'react-native-navigation';
 const token = null;
 class User{
   constructor(){
-    var token = storage.getItem('token');
-    if(token){
-      var username = storage.getItem('username');
-      var avatar = storage.getItem('avatar');
-      this.token = token;
-      this.username = username;
-      this.avatar = avatar;
-    }else {
-      this.token = null;
-    }
-    return this;
-  }
 
+    global.Storage.getBatchData([
+      { key: 'token' },
+      { key: 'username' },
+      { key: 'avatar' },
+    ]).then((data)=>{
+        if(data[0]) { // token
+
+        }else {
+          this.goLoginView();
+        }
+    })
+  }
+  goLoginView(){
+    Navigation.push({
+      screen: 'User.Login',
+      title: '用户登录'
+    });
+  }
   login(){
     //登录
     //设置token
@@ -30,7 +37,7 @@ class User{
 
   setToken(token){
     this.token = token;
-    storage.save('token',token);
+    setItem('token',token);
   }
 }
 

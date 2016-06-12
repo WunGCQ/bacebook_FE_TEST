@@ -33,13 +33,7 @@ export default class Login extends Component {
       telephone:'',
       password:'',
     };
-    this.props.navigator.setOnNavigatorEvent(()=>{
-      alert('!!');
-      this.props.navigator.toggleTabs({
-        to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
-        animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
-      });
-    });
+
   }
 
   componentDidMount() {
@@ -76,7 +70,7 @@ export default class Login extends Component {
             style={S.input}
             placeholder="输入密码"
             secureTextEntry={true}
-            onChangeText={this.setUsername.bind(this)}
+            onChangeText={this.setPassword.bind(this)}
             keyboardType={'default'}
             ></TextInput>
         </View>
@@ -117,10 +111,8 @@ export default class Login extends Component {
     .then((responseData) => {
       if(responseData.status == 0){
         alert('登录成功！');
-        
       } else {
         alert(responseData.message);
-
       }
     })
   }

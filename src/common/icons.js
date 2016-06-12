@@ -7,6 +7,11 @@ export default {
   Row: {
     ARROW: require('../../static/images/icons/appbar.row.arrow.png'),
   },
+  AVATAR: {
+    head_1: require('../../static/images/avatar/head_1.png'),
+    head_2: require('../../static/images/avatar/head_2.png'),
+    head_3: require('../../static/images/avatar/head_3.png'),
+  },
   Dialog: {
     BUTTON:{
       IMAGE: require('../../static/images/icons/appbar.image.hdr.png'),

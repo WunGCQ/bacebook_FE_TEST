@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "sudo babel-node src/app.js"
+    "dev": "babel-node src/app.js"
   },
   "author": "",
   "license": "ISC",

@@ -4,6 +4,7 @@ import { registerScreens } from './src/screens';
 import ICONS from './src/common/icons';
 import COLORS from './src/common/colors';
 import config from './config';
+// import user from './src/common/user';
 
 registerScreens(); // this is where you register all of your app's screens
 
@@ -14,6 +15,7 @@ registerScreens(); // this is where you register all of your app's screens
       global.SELF = responseData.me;
     })
     .done();
+
 })();
 // start the app
 Navigation.startTabBasedApp({
@@ -26,8 +28,8 @@ Navigation.startTabBasedApp({
       title: '聊天',
     },
     {
-      label: '群组',
-      screen: 'User.Register', // this is a registered name for a screen
+      label: '联系人',
+      screen: 'Users.List', // this is a registered name for a screen
       icon: ICONS.Navigation.GROUP,
       selectedIcon: ICONS.Navigation.GROUP,
       title: '群组',

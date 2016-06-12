@@ -76,14 +76,14 @@ export default class UserCenter extends Component {
       return this.renderLoadingView();
     }
 
-    const { avatar, username} = this.state.data;
+    const { avatar,head_id, username} = this.state.data;
     return (
       <View style={S.wrapper}>
         <View style={S.container}>
           <View style={S.top_user_block}>
             <View style={S.avatar_wrapper}>
               <Image
-                source={{uri: avatar}}
+                source={{uri: head_id}}
                 style={S.avatar}/>
             </View>
             <View style={S.user_name_wrapper}>
@@ -112,7 +112,7 @@ export default class UserCenter extends Component {
   logOutMenu(){
     return (
       <View style={S.list_container}>
-        <Row align={'center'}>退出登录</Row>
+        <Row align={'center'} onPress={this.doLogout.bind(this)}>退出登录</Row>
       </View>
     )
   }
@@ -133,7 +133,12 @@ export default class UserCenter extends Component {
       screen: 'User.Login',
       title: '用户登录',
     });
-    
+  }
+
+  doLogout(){
+    //user.logout().then(this.goLoginView.bind(this));
+    //调用全局单例
+    //完成后跳转页面到登录
   }
 }
 

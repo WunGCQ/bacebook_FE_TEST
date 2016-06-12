@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 
 import COLORS from '../../common/colors';
-
-export default class DialogListCell extends Component {
+import ICONS from '../../common/icons';
+export default class UserListCell extends Component {
   render(){
     const D = this.props.dialog;
     return (
@@ -21,13 +21,12 @@ export default class DialogListCell extends Component {
         <View style={this.props.lastChild?styles.lastChild:styles.container} onPress={()=>this.goDialogView}>
           <View style={styles.avatar_wrapper}>
             <Image
-              source={{uri: D.from.head_id}}
+              source={{uri:D.head_id}}
               style={styles.avatar}
             />
           </View>
           <View style={styles.rightContainer}>
-            <Text style={styles.username}>{D.from.username}</Text>
-            <Text style={styles.overview}>{D.overview || ''}</Text>
+            <Text style={styles.username}>{D.username}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -58,6 +57,7 @@ var STYLE_ORIGIN = {
   username: {
     fontSize: 18,
     marginBottom: 2,
+    marginTop: 10,
     textAlign: 'left',
   },
   overview: {
