@@ -9,25 +9,25 @@ export default {
       id: 1,
       username : '老中医',
       avatar : config.rootUrl+'/img/me.JPG',
-      head_id: config.rootUrl+'/img/me.JPG',
+      head_id: 'head_1',
     },
     {
       id: 2,
       username : 'saazm',
       avatar : config.rootUrl+'/img/szm.jpg',
-      head_id : config.rootUrl+'/img/szm.jpg',
+      head_id : 'head_2',
     },
     {
       id: 3,
       username : 'xsf',
       avatar : config.rootUrl+'/img/xsf.jpg',
-      head_id: config.rootUrl+'/img/xsf.jpg',
+      head_id: 'head_3',
     },
   ],
   me:{
     id: 1,
     username : '老中医',
     avatar : config.rootUrl+'/img/me.JPG',
-    head_id : config.rootUrl+'/img/me.JPG',
+    head_id : 'head_1',
   }
 }

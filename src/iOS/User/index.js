@@ -64,6 +64,7 @@ export default class UserCenter extends Component {
           data: {
             username: responseData.me.username,
             avatar: responseData.me.avatar,
+            head_id: responseData.me.head_id,
           },
           loaded: true,
         });
@@ -83,7 +84,7 @@ export default class UserCenter extends Component {
           <View style={S.top_user_block}>
             <View style={S.avatar_wrapper}>
               <Image
-                source={{uri: head_id}}
+                source={ICONS.AVATAR[head_id]}
                 style={S.avatar}/>
             </View>
             <View style={S.user_name_wrapper}>

@@ -58,7 +58,7 @@ export default class DialogSingle extends Component {
           <View style={S.right}>
             <View style={S.avatar_wrapper}>
               <Image
-                source={{uri: M.user.avatar}}
+                source={ICONS.AVATAR[M.user.head_id]}
                 style={S.avatar}
               />
             </View>
@@ -81,7 +81,7 @@ export default class DialogSingle extends Component {
           <View style={S.left}>
             <View style={S.avatar_wrapper}>
               <Image
-                source={{uri: M.user.avatar}}
+                source={ICONS.AVATAR[M.user.head_id]}
                 style={S.avatar}
               />
             </View>

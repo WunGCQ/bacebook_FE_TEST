@@ -21,7 +21,7 @@ export default class UserListCell extends Component {
         <View style={this.props.lastChild?styles.lastChild:styles.container} onPress={()=>this.goDialogView}>
           <View style={styles.avatar_wrapper}>
             <Image
-              source={{uri:D.head_id}}
+              source={ICONS.AVATAR[D.head_id]}
               style={styles.avatar}
             />
           </View>

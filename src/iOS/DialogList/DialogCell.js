@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import COLORS from '../../common/colors';
+import ICONS from '../../common/icons';
 
 export default class DialogListCell extends Component {
   render(){
@@ -21,7 +22,7 @@ export default class DialogListCell extends Component {
         <View style={this.props.lastChild?styles.lastChild:styles.container} onPress={()=>this.goDialogView}>
           <View style={styles.avatar_wrapper}>
             <Image
-              source={{uri: D.from.head_id}}
+              source={ICONS.AVATAR[D.from.head_id]}
               style={styles.avatar}
             />
           </View>
