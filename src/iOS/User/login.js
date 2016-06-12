@@ -7,14 +7,20 @@ import React, {
   Component,
 } from 'react';
 import {
-  AppRegistry,
   Image,
   ListView,
   StyleSheet,
   Text,
+  TextInput,
   View,
+  Dimensions,
+  TouchableHighlight,
 } from 'react-native';
 
+import COLORS from '../../common/colors';
+
+import KeyboardEvents from 'react-native-keyboardevents';
+var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
 export default class Login extends Component {
   constructor(props) {
@@ -23,93 +29,149 @@ export default class Login extends Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
-      loaded: false,
+      typing:false,
+      telephone:'',
+      password:'',
     };
+    this.props.navigator.setOnNavigatorEvent(()=>{
+      alert('!!');
+      this.props.navigator.toggleTabs({
+        to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
+        animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
+      });
+    });
   }
 
   componentDidMount() {
-    // this.fetchData();
+    KeyboardEventEmitter.on(KeyboardEvents.KeyboardWillShowEvent, (frames) => {
+      this.setState({typing:true});
+    });
+    KeyboardEventEmitter.on(KeyboardEvents.KeyboardDidHideEvent, (frames) => {
+      this.setState({typing:false});
+    });
   }
 
 
   render() {
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
-    }
-
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderMovie}
-        style={styles.listView}
-      />
-    );
-  }
-
-  renderLoadingView() {
-    return (
-      <View style={styles.container}>
-        <Text>
-          Loading movies...
-        </Text>
+      <View style={this.getTypingStyle()}>
+        <View style={{paddingTop:50}}>
+          <Text style={S.h1}>用户登录</Text>
+        </View>
+        <View  style={S.row} >
+          <Text style={S.label} >手机号</Text>
+        </View>
+        <View  style={S.row} >
+          <TextInput
+            style={S.input}
+             placeholder="输入手机号"
+             onChangeText={this.setPhone.bind(this)}
+             keyboardType={'default'}></TextInput>
+        </View>
+        <View style={S.row} >
+          <Text style={S.label} >密码</Text>
+        </View>
+        <View  style={S.row} >
+          <TextInput
+            style={S.input}
+            placeholder="输入密码"
+            secureTextEntry={true}
+            onChangeText={this.setUsername.bind(this)}
+            keyboardType={'default'}
+            ></TextInput>
+        </View>
+        <View style={S.row}>
+          <TouchableHighlight
+            style={{height:40,borderRadius:4, marginTop: 20,overflow:'hidden',backgroundColor:COLORS.ACTIVE_ICON_COLOR}}
+             underlayColor={COLORS.ACTIVE_ICON_COLOR}
+             onPress={this.doLogin.bind(this)}>
+            <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>登录</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
 
-  renderMovie(movie) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.avatar}>
-          <Image
-            source={{uri: movie.posters.thumbnail}}
-            style={styles.thumbnail}
-          />
-        </View>
-        <View style={styles.rightContainer}>
-          <Text style={styles.title}>{movie.title}</Text>
-          <Text style={styles.year}>{movie.year}</Text>
-        </View>
-      </View>
-    );
+  setPhone(telephone){
+    this.setState({telephone: telephone});
   }
+  setPassword(password){
+    this.setState({password: password});
+  }
+
+  getTypingStyle(){
+    return this.state.typing? S.wrapper_typing : S.wrapper;
+  }
+
+  doLogin(){
+    var {telephone, password} = this.state;
+    alert(telephone);
+    fetch(config.rootUrl+'/login',{
+      method: 'POST',
+      body:JSON.stringify({
+        telephone: telephone,
+        password: password
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      if(responseData.status == 0){
+        alert('登录成功！');
+        
+      } else {
+        alert(responseData.message);
+
+      }
+    })
+  }
+
+
+
+
 }
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+var S = StyleSheet.create({
+  wrapper:{
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    flex:1,
+    alignSelf:'stretch',
+    position:'absolute',
+    backgroundColor: '#EFEFEF',
   },
-  rightContainer: {
-    flex: 1,
+  wrapper_typing:{
+    height: Dimensions.get('window').height - 210,
+    width: Dimensions.get('window').width,
+    flex:1,
+    alignSelf:'stretch',
+    position:'absolute',
+    backgroundColor: '#EFEFEF',
   },
-  title: {
+  h1:{
     fontSize: 20,
-    marginBottom: 8,
     textAlign: 'center',
   },
-  avatar: {
-    borderRadius: 30,
-    height: 30,
-    width: 30,
-    justifyContent: 'center',
-    overflow: 'hidden',
+  row: {
+    paddingLeft: 15,
+    paddingTop: 5,
+    paddingRight: 15,
+    paddingBottom: 5,
   },
-  year: {
-    textAlign: 'center',
+  input: {
+    height: 35,
+    borderWidth: 1,
+    borderColor: COLORS.COMMON_GRAY,
+    borderRadius: 4,
+    paddingLeft: 10,
+    marginBottom:5,
+    fontSize: 14,
+    backgroundColor:'#fff',
   },
-  thumbnail: {
-    width: 53,
-    height: 81,
-  },
-  listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
-  },
+  label: {
+    textAlign: 'left',
+    color: '#666',
+    fontSize: 14,
+  }
 });
 
 // AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);

@@ -18,9 +18,8 @@ import {
 import naviStyle from '../../common/navigatorStyle';
 import DialogListCell from './DialogCell';
 
-var config = require('../../../config.js');
+import config from '../../../config';
 
-// var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
 const REQUEST_URL = config.rootUrl+'/dialogs/';
 
 var lastId = null;
@@ -94,8 +93,7 @@ export default class MainList extends Component {
   }
 
   goDialogView(dialog){
-    // console.log(data);
-    console.log(dialog)
+    // console.log(dialog);
     this.props.navigator.push({
       screen: 'Main.Dialog.Single',
       title: dialog.from.username,

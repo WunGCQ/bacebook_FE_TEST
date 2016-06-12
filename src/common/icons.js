@@ -4,6 +4,9 @@ export default {
     GROUP : require('../../static/images/icons/appbar.group.png'),
     DIALOG : require('../../static/images/icons/appbar.message.png'),
   },
+  Row: {
+    ARROW: require('../../static/images/icons/appbar.row.arrow.png'),
+  },
   Dialog: {
     BUTTON:{
       IMAGE: require('../../static/images/icons/appbar.image.hdr.png'),

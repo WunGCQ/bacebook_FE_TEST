@@ -79,10 +79,17 @@ export default class DialogSingle extends Component {
           returnKeyType={'send'}
           value={this.props.value}
           />
-        <TouchableHighlight style={S.send_btn} onPress={this.props.sendText}>
+
+        <TouchableHighlight
+          style={S.send_btn}
+          onPress={this.props.sendText}
+          underlayColor={COLORS.COMMON_GRAY}>
           <Text style={S.send_btn_text}>{'发送'}</Text>
         </TouchableHighlight>
-        <TouchableHighlight style={S.send_pic_btn} onPress={this.pickImage.bind(this)}>
+        <TouchableHighlight
+          style={S.send_pic_btn}
+          onPress={this.pickImage.bind(this)}
+          underlayColor={COLORS.COMMON_GRAY}>
           <Image source={ICONS.Dialog.BUTTON.IMAGE} style={S.send_pic_btn_img}/>
         </TouchableHighlight>
       </View>

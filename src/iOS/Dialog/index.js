@@ -24,16 +24,12 @@ import naviStyle from '../../common/navigatorStyle';
 import bgImg from '../../common/bg';
 import Message from './message';
 import MessageInputWrapper from './messageInputWrapper';
-import config from '../../../config.js';
+import config from '../../../config';
 import KeyboardEvents from 'react-native-keyboardevents';
 var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
+var REQUEST_URL = config.rootUrl+'/dialog';
 
-
-
-
-// var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = config.rootUrl+'/dialog';
 
 var lastId = null;
 export default class DialogSingle extends Component {
@@ -74,9 +70,6 @@ export default class DialogSingle extends Component {
     KeyboardEventEmitter.on(KeyboardEvents.KeyboardWillShowEvent, (frames) => {
       this.setState({typing:true});
     });
-    // KeyboardEventEmitter.on(KeyboardEvents.KeyboardDidShowEvent, (frames) => {
-    //   alert('will show');
-    // });
     KeyboardEventEmitter.on(KeyboardEvents.KeyboardDidHideEvent, (frames) => {
       this.setState({typing:false});
     });
@@ -95,9 +88,6 @@ export default class DialogSingle extends Component {
           loaded: true,
         });
 
-        // this.refs.scrollView.scrollToTop();
-        // console.log(this.refs.scrollView);
-        // alert(this.refs.scrollView.scrollProperties.contentLength);
       })
       .done();
   }

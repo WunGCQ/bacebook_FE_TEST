@@ -7,6 +7,7 @@ var time = (function(){
     return new Date(time);
   }
 })();
+
 export default {
   users:{
     '1': users.users[0],

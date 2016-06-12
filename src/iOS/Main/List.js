@@ -2,7 +2,7 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  */
-var config = require('../../../config.js');
+
 import React, {
   Component,
 } from 'react';
@@ -17,9 +17,10 @@ import {
 } from 'react-native';
 
 import naviStyle from '../../common/navigatorStyle';
+import config from '../../../config';
 
 // var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
-const REQUEST_URL = config.rootUrl+'/dialogs/';
+const REQUEST_URL = config.rootUrl +'/dialogs/';
 
 export default class MainList extends Component {
 

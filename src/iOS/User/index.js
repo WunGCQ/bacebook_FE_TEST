@@ -15,13 +15,20 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
+  TouchableHighlight,
 } from 'react-native';
 
-import COLORS from '../../common/colors';
-import naviStyle from '../../common/navigatorStyle';
-var config = require('../../../config.js');
+import {
+  Row,
+  Hr
+} from '../../Components';
 
-const avatarURL = '../../../img/intro-wifi-img-01.png';
+import COLORS from '../../common/colors';
+import ICONS from '../../common/icons';
+import naviStyle from '../../common/navigatorStyle';
+import config from '../../../config';
+
 
 export default class UserCenter extends Component {
 
@@ -35,9 +42,17 @@ export default class UserCenter extends Component {
       }),
       loaded: false,
     };
+    this.props.navigator.setOnNavigatorEvent(()=>{
+      alert('!!');
+      this.props.navigator.toggleTabs({
+        to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
+        animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
+      });
+    });
   }
 
   componentDidMount() {
+
     this.fetchUserData();
   }
 
@@ -56,7 +71,6 @@ export default class UserCenter extends Component {
       .done();
   }
 
-
   render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
@@ -64,50 +78,92 @@ export default class UserCenter extends Component {
 
     const { avatar, username} = this.state.data;
     return (
-      <View style={STYLES.container}>
-        <View style={STYLES.top_user_block}>
-          <View style={STYLES.avatar_wrapper}>
-            <Image
-              source={{uri: avatar}}
-              style={STYLES.avatar}/>
+      <View style={S.wrapper}>
+        <View style={S.container}>
+          <View style={S.top_user_block}>
+            <View style={S.avatar_wrapper}>
+              <Image
+                source={{uri: avatar}}
+                style={S.avatar}/>
+            </View>
+            <View style={S.user_name_wrapper}>
+              <Text style={S.user_name}>{username}</Text>
+            </View>
           </View>
-          <View style={STYLES.user_name_wrapper}>
-            <Text style={STYLES.user_name}>{username}</Text>
-          </View>
+          {this.userMenuList()}
+          {this.logOutMenu()}
         </View>
       </View>
     );
   }
 
+  userMenuList(){
+    return (
+      <View style={S.list_container}>
+        <Row arrow={1}>修改头像</Row>
+        <Hr/>
+        <Row arrow={1}>修改资料</Row>
+        <Hr/>
+        <Row arrow={1} onPress={this.goLoginView.bind(this)}>重新登录</Row>
+      </View>
+    )
+  }
+
+  logOutMenu(){
+    return (
+      <View style={S.list_container}>
+        <Row align={'center'}>退出登录</Row>
+      </View>
+    )
+  }
+
   renderLoadingView() {
     return (
-      <View style={STYLES.container}>
+      <View style={S.container}>
         <Text>
           加载中...
         </Text>
       </View>
     );
   }
+
+  goLoginView(){
+    // console.log(dialog);
+    this.props.navigator.push({
+      screen: 'User.Login',
+      title: '用户登录',
+    });
+    
+  }
 }
 
-var STYLES = StyleSheet.create({
+
+var styles_obj = {
+  wrapper:{
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    flex:1,
+    alignSelf:'stretch',
+    position:'absolute',
+    backgroundColor: '#EFEFEF',
+  },
   container: {
     // flex: 0,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-
+    backgroundColor: '#EFEFEF',
     // backgroundColor: '#F5FCFF',
   },
   top_user_block: {
 
     flexWrap: 'wrap',
     // backgroundColor: COLORS.ACTIVE_ICON_BG_COLOR,
-    // backgroundColor: '#ccc',
-    height: 150,
+    backgroundColor: '#FFF',
+    height: 160,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomColor: COLORS.COMMON_GRAY,
-    borderBottomWidth: 0.5,
+    // borderBottomColor: COLORS.COMMON_GRAY,
+    // borderBottomWidth: 0.5,
     // textAlign: 'center',
   },
   avatar_wrapper: {
@@ -127,12 +183,22 @@ var STYLES = StyleSheet.create({
     paddingTop: 5,
   },
   user_name: {
-    lineHeight: 24,
+    lineHeight: 30,
     fontSize: 16,
-    color: COLORS.COMMON_GRAY,
+    color: '#000',
+  },
+  list_container: {
+    flex: 1,
+    marginTop: 20,
+    borderTopWidth: 0.5,
+    borderTopColor: COLORS.COMMON_GRAY,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.COMMON_GRAY,
+    backgroundColor: '#fff',
   },
 
 
-});
+};
+var S = StyleSheet.create(styles_obj);
 
 // AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);

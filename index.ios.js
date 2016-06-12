@@ -3,7 +3,7 @@ import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './src/screens';
 import ICONS from './src/common/icons';
 import COLORS from './src/common/colors';
-var config = require('../../../config.js');
+import config from './config';
 
 registerScreens(); // this is where you register all of your app's screens
 

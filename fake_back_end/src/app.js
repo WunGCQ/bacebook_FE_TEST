@@ -4,7 +4,7 @@ import Routes from './routes';
 import _Static from 'koa-static';
 
 let app = new Koa();
-let PORT = 80;
+let PORT = 8080;
 
 app.use(Routes);
 

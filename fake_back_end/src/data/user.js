@@ -1,8 +1,9 @@
-var config = require('../../../config.js');
+import config from '../../config';
 /**
  * Created by wungcq on 16/5/15.
  */
-export  default {
+console.log(config.rootUrl);
+export default {
   users:[
     {
       id: 1,
