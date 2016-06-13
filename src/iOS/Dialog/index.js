@@ -118,6 +118,7 @@ export default class DialogSingle extends Component {
             sendText={this.sendText.bind(this)}
             setText={this.setText.bind(this)}
             value={this.state.text}
+            addImageMessage={this.addImageMessage.bind(this)}
             />
         </View>
       )
@@ -125,6 +126,7 @@ export default class DialogSingle extends Component {
   }
 
   setHeight(e){
+    alert('!');
     var {x, y, width, height} = e.nativeEvent.layout;
     var h = Dimensions.get('window').height - 125 - 70 - (!this.state.typing? 210: 0);
     this.setState({layout:e.nativeEvent.layout});
@@ -188,6 +190,22 @@ export default class DialogSingle extends Component {
       text: '',
     });
 
+  }
+
+  addImageMessage(imageURI){
+    var obj = {
+      from: global.SELF.id,
+      contentType: 'image',
+      content: imageURI,
+      time: new Date().getTime(),
+    };
+    var messages = this.state.originData.concat();
+    messages.push(obj);
+    this.setState({
+      originData: messages,
+      dataSource: this.state.dataSource.cloneWithRows(messages),
+      text: '',
+    });
   }
 
 }

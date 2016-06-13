@@ -101,9 +101,9 @@ export default class UserCenter extends Component {
   userMenuList(){
     return (
       <View style={S.list_container}>
-        <Row arrow={1}>修改头像</Row>
+        <Row arrow={1} onPress={this.goHeadView.bind(this)}>修改头像</Row>
         <Hr/>
-        <Row arrow={1}>修改资料</Row>
+        <Row arrow={1} onPress={this.goModifyView.bind(this)}>修改资料</Row>
         <Hr/>
         <Row arrow={1} onPress={this.goLoginView.bind(this)}>重新登录</Row>
       </View>
@@ -126,6 +126,22 @@ export default class UserCenter extends Component {
         </Text>
       </View>
     );
+  }
+
+  goHeadView(){
+    // console.log(dialog);
+    this.props.navigator.push({
+      screen: 'User.Head',
+      title: '修改头像',
+    });
+  }
+
+  goModifyView(){
+    // console.log(dialog);
+    this.props.navigator.push({
+      screen: 'User.Modify',
+      title: '修改资料',
+    });
   }
 
   goLoginView(){

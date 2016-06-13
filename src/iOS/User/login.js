@@ -22,6 +22,8 @@ import COLORS from '../../common/colors';
 import KeyboardEvents from 'react-native-keyboardevents';
 var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
+var user = {login:()=>{}};//fake import
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -99,22 +101,9 @@ export default class Login extends Component {
 
   doLogin(){
     var {telephone, password} = this.state;
-    alert(telephone);
-    fetch(config.rootUrl+'/login',{
-      method: 'POST',
-      body:JSON.stringify({
-        telephone: telephone,
-        password: password
-      }),
-    })
-    .then((response) => response.json())
-    .then((responseData) => {
-      if(responseData.status == 0){
-        alert('登录成功！');
-      } else {
-        alert(responseData.message);
-      }
-    })
+    // alert(telephone);
+    user.login(telephone, password);
+
   }
 
 

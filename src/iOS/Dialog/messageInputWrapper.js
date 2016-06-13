@@ -123,7 +123,7 @@ export default class DialogSingle extends Component {
         // const source = {uri: response.uri.replace('file://', ''), isStatic: true};
         // uri (on android)
         // const source = {uri: response.uri, isStatic: true};
-
+        this.props.addImageMessage(source.uri);
         this.setState({
           avatarSource: source
         });
