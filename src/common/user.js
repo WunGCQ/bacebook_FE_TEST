@@ -37,15 +37,14 @@ class User{
     .then((responseData) => {
       const {status,message,token,id,username,head_id};
       if(responseData.status == 0){
-        self.setToken(token);
-        self.setUserInfo({id:id,head_id:head_id,username:username});
+        self.setToken(token);    //设置token
+        self.setUserInfo({id:id,head_id:head_id,username:username});        //存储用户数据
       } else {
         alert(responseData.message);
       }
     });
-    //设置token
-    //存储用户数据
-    //跳到用户界面
+
+
 
   }
 

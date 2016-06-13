@@ -100,9 +100,15 @@ export default class Login extends Component {
   }
 
   doLogin(){
+    var self = this;
     var {telephone, password} = this.state;
-    // alert(telephone);
-    user.login(telephone, password);
+
+    user.login(telephone, password).done((response)=>{
+      self.props.navigator.push({
+        screen: 'Main.List',
+        title: '聊天',
+      })
+    });
 
   }
 
