@@ -126,7 +126,6 @@ export default class DialogSingle extends Component {
   }
 
   setHeight(e){
-    alert('!');
     var {x, y, width, height} = e.nativeEvent.layout;
     var h = Dimensions.get('window').height - 125 - 70 - (!this.state.typing? 210: 0);
     this.setState({layout:e.nativeEvent.layout});

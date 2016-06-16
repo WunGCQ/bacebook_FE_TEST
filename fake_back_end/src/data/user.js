@@ -10,18 +10,25 @@ export default {
       username : '老中医',
       avatar : config.rootUrl+'/img/me.JPG',
       head_id: 'head_1',
+      status: 'accepted',
     },
     {
       id: 2,
       username : 'saazm',
-      avatar : config.rootUrl+'/img/szm.jpg',
       head_id : 'head_2',
+      status: 'waiting',
     },
     {
       id: 3,
       username : 'xsf',
-      avatar : config.rootUrl+'/img/xsf.jpg',
       head_id: 'head_3',
+      status: 'accepted',
+    },
+    {
+      id: 4,
+      username : '术士',
+      head_id: 'head_4',
+      status: 'rejected',
     },
   ],
   me:{

@@ -16,20 +16,16 @@ import {
 } from 'react-native';
 
 import naviStyle from '../../common/navigatorStyle';
-import UserCell from './UserCell';
+import ApplicationCell from './applicationCell';
+import ICONS from '../../common/icons';
 
 import config from '../../../config';
-import ICONS from '../../common/icons';
 
 const REQUEST_URL = config.rootUrl+'/user/';
 
 var lastId = null;
 
-const newUserCell = {
-  id: -1,
-  head_id: 'newUser',
-  username: '好友申请',
-};
+
 export default class MainList extends Component {
 
   static navigatorStyle = naviStyle;
@@ -47,6 +43,17 @@ export default class MainList extends Component {
       },
     ]
   };
+
+  onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
+    if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
+      if (event.id == 'edit') { // this is the same id field from the static navigatorButtons definition
+
+      }
+      if (event.id == 'add') {
+        AlertIOS.alert('NavBar', 'Add button pressed');
+      }
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -66,7 +73,6 @@ export default class MainList extends Component {
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
-        responseData.users.splice(0,-1,newUserCell);
         lastId = responseData.users[responseData.users.length - 1].id;
         responseData.users.forEach((d)=>{d.isLastChild = (d.id == lastId) });
         this.setState({
@@ -85,11 +91,11 @@ export default class MainList extends Component {
 
     console.log(this.props);
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderUserCell.bind(this)}
-        style={styles.listView}
-      />
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderApplicationCell.bind(this)}
+          style={styles.listView}
+        />
     );
   }
 
@@ -105,11 +111,10 @@ export default class MainList extends Component {
 
 
 
-  renderUserCell(user) {
-
+  renderApplicationCell(user) {
     return (
-      <UserCell
-        onSelect={this.goDialogView.bind(this,user)}
+      <ApplicationCell
+        onSelect={this.goDialogView.bind(this,user.id)}
         user={user}
         lastChild={user.isLastChild}/>
     );
@@ -118,8 +123,8 @@ export default class MainList extends Component {
   goDialogView(user){
     if(user.id == -1){ //
       this.props.navigator.push({
-        screen: 'Users.Add.List',
-        title: '新的朋友',
+        screen: 'Main.Dialog.Single',
+        title: user.username,
       });
     }else { //regular
       this.props.navigator.push({
@@ -127,8 +132,6 @@ export default class MainList extends Component {
         title: user.username,
       });
     }
-
-
   }
 }
 

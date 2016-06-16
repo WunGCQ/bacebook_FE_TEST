@@ -32,7 +32,7 @@ Navigation.startTabBasedApp({
       screen: 'Users.List', // this is a registered name for a screen
       icon: ICONS.Navigation.GROUP,
       selectedIcon: ICONS.Navigation.GROUP,
-      title: '群组',
+      title: '联系人',
     },
     {
       label: '用户',

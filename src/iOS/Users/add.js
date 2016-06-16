@@ -59,7 +59,7 @@ export default class MainList extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    // this.fetchData();
   }
 
   fetchData() {
@@ -85,11 +85,22 @@ export default class MainList extends Component {
 
     console.log(this.props);
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderUserCell.bind(this)}
-        style={styles.listView}
-      />
+      <View>
+        <View>
+          <TextInput
+            style={S.input}
+             placeholder="输入用户id"
+             onChangeText={this.setId.bind(this)}
+             keyboardType={'default'}/>
+        </View>
+
+           <ListView
+             dataSource={this.state.dataSource}
+             renderRow={this.renderUserCell.bind(this)}
+             style={styles.listView}
+           />
+      </View>
+
     );
   }
 
@@ -109,27 +120,13 @@ export default class MainList extends Component {
 
     return (
       <UserCell
-        onSelect={this.goDialogView.bind(this,user)}
+        onSelect={this.}
         user={user}
         lastChild={user.isLastChild}/>
     );
   }
 
-  goDialogView(user){
-    if(user.id == -1){ //
-      this.props.navigator.push({
-        screen: 'Users.Add.List',
-        title: '新的朋友',
-      });
-    }else { //regular
-      this.props.navigator.push({
-        screen: 'Main.Dialog.Single',
-        title: user.username,
-      });
-    }
 
-
-  }
 }
 
 var styles = StyleSheet.create({

@@ -6,6 +6,7 @@ import UserCenter from './iOS/User/index';
 import MainList from './iOS/DialogList/List';
 import DialogSingle from './iOS/Dialog';
 import UserList from './iOS/Users';
+import UserApplicationList from './iOS/Users/applications';
 
 
 // register all screens of the app (including internal ones)
@@ -15,5 +16,6 @@ export function registerScreens() {
   Navigation.registerComponent('User.Register', () => UserRegister);
   Navigation.registerComponent('Main.List', () => MainList);
   Navigation.registerComponent('Users.List', () => UserList);
+  Navigation.registerComponent('Users.Add.List', () => UserApplicationList);//申请联系人列表
   Navigation.registerComponent('Main.Dialog.Single', () => DialogSingle);//聊天界面
 }
