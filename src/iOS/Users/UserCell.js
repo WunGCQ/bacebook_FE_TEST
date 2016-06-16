@@ -57,7 +57,7 @@ var STYLE_ORIGIN = {
   username: {
     fontSize: 16,
     marginBottom: 2,
-    marginTop: 10,
+    marginTop: 0,
     textAlign: 'left',
   },
   overview: {

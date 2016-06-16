@@ -78,11 +78,11 @@ export default class UserAdd extends Component {
 
   result(){
     const { addUser, loaded } = this.state;
-    if(loaded){
-      return ()
+    if(!loaded){
+      return (<Text style={S.empty_result}>加载中...</Text>)
     }
     else if(!addUser){
-      return (<Text style={S.empty_result}></Text>)
+      return (<Text style={S.empty_result}>暂无结果</Text>)
     }else{
       return (
         <ApplicationCell user={addUser} onSelect={this.doAdd.bind(this)}/>
@@ -136,7 +136,7 @@ var S = StyleSheet.create({
     // flexDirection: 'row',
     // justifyContent: 'flex-start',
     // alignItems: 'flex-start',
-    backgroundColor: '#000',
+    backgroundColor: '#efefef',
   },
   input_wrapper: {
     // flex:1,
@@ -153,8 +153,8 @@ var S = StyleSheet.create({
     marginRight: 65,
     paddingLeft: 8,
     borderRadius: 3,
-    height: 25,
-    fontSize: 12,
+    height: 30,
+    fontSize: 14,
     color : "#000",
     borderColor: COLORS.COMMON_GRAY,
     borderWidth: 0.5,
@@ -163,22 +163,23 @@ var S = StyleSheet.create({
   send_btn: {
     borderWidth: 0.5,
     position: 'absolute',
-    right: 15,
+    right: 10,
     top: 20,
     borderColor: COLORS.COMMON_GRAY,
     borderRadius: 4,
-    height: 25,
-    width: 40,
+    height: 28,
+    width: 50,
   },
   send_btn_text: {
     textAlign: 'center',
-    fontSize: 9,
-    lineHeight: 16,
+    fontSize: 12,
+    lineHeight: 18,
     color: COLORS.DARK_GRAY,
   },
   result_wrapper: {
     borderBottomWidth: 0.5,
     borderBottomColor: COLORS.COMMON_GRAY,
+    backgroundColor:'#fff'
   },
   empty_result: {
     textAlign: 'center',

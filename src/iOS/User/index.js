@@ -28,6 +28,7 @@ import COLORS from '../../common/colors';
 import ICONS from '../../common/icons';
 import naviStyle from '../../common/navigatorStyle';
 import config from '../../../config';
+import User from '../../common/user';
 
 
 export default class UserCenter extends Component {
@@ -43,7 +44,6 @@ export default class UserCenter extends Component {
       loaded: false,
     };
     this.props.navigator.setOnNavigatorEvent(()=>{
-      alert('!!');
       this.props.navigator.toggleTabs({
         to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
         animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
@@ -54,6 +54,7 @@ export default class UserCenter extends Component {
   componentDidMount() {
 
     this.fetchUserData();
+    global.user = new User();
   }
 
   fetchUserData() {

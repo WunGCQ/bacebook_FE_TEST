@@ -1,3 +1,3 @@
 export default config = {
-  rootUrl: 'http://m.me:8080',
+  rootUrl: 'http://127.0.0.1:8080',
 };

@@ -155,11 +155,11 @@ let myStyle = {
     },
     input_blur: {
       marginLeft: 10,
-      marginRight: 60 + 30,
+      marginRight: 73 + 30,
       paddingLeft: 8,
       borderRadius: 3,
-      height: 25,
-      fontSize: 12,
+      height: 30,
+      fontSize: 14,
       color : COLORS.DARK_GRAY,
       borderColor: COLORS.COMMON_GRAY,
       borderWidth: 0.5,
@@ -168,23 +168,23 @@ let myStyle = {
     send_btn: {
       borderWidth: 0.5,
       position: 'absolute',
-      right: 10 + 30,
+      right: 15 + 30,
       top: 10,
       borderColor: COLORS.COMMON_GRAY,
       borderRadius: 4,
-      height: 25,
-      width: 40,
+      height: 28,
+      width: 45,
     },
     send_btn_text: {
       textAlign: 'center',
-      fontSize: 9,
-      lineHeight: 16,
+      fontSize: 12,
+      lineHeight: 20,
       color: COLORS.DARK_GRAY,
     },
     send_pic_btn: {
       position: 'absolute',
-      width: 25,
-      height: 25,
+      width: 28,
+      height: 28,
       top: 10,
       right: 10,
       overflow: 'hidden',
@@ -195,8 +195,8 @@ let myStyle = {
     },
     send_pic_btn_img: {
       tintColor: COLORS.DARK_GRAY,
-      width: 25,
-      height: 25,
+      width: 28,
+      height: 28,
     }
 };
 

@@ -8,13 +8,14 @@ import DialogSingle from './iOS/Dialog';
 import UserList from './iOS/Users';
 import UserApplicationList from './iOS/Users/applications';
 import UserAdd from './iOS/Users/add';
-
+import UserHead from './iOS/User/head';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
   Navigation.registerComponent('User.Center', () => UserCenter);
   Navigation.registerComponent('User.Login', () => UserLogin);
   Navigation.registerComponent('User.Register', () => UserRegister);
+  Navigation.registerComponent('User.Head', () => UserHead);
   Navigation.registerComponent('Main.List', () => MainList);
   Navigation.registerComponent('Users.List', () => UserList);
   Navigation.registerComponent('Users.Add.List', () => UserApplicationList);//申请联系人列表

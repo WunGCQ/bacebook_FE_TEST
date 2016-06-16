@@ -1,27 +1,37 @@
-import {setItem, getItem} from './storage';
-import Navigation from 'react-native-navigation';
+// import {setItem, getItem} from './storage';
+// import Navigation from 'react-native-navigation';
+import Store from 'react-native-store';
+
+
 import config from '../../config';
+
+import React, {Component, AsyncStorage } from 'react-native';
+
 const token = null;
-class User{
+
+const DB = {
+    'user': Store.model('user'),
+}
+
+export default class User {
   constructor(){
-
-    global.Storage.getBatchData([
-      { key: 'token' },
-      { key: 'username' },
-      { key: 'avatar' },
-    ]).then((data)=>{
-        if(data[0]) { // token
-
-        }else {
-          this.goLoginView();
-        }
+    DB.user.add({
+      id: 1,
+      token: '2333',
+      username: '老中医',
+      head_id: 'head_1',
+    }).then(()=>{
+        DB.user.find().then((res)=>{
+          var str = JSON.stringify(arguments);
+        })
     })
   }
   goLoginView(){
-    Navigation.push({
-      screen: 'User.Login',
-      title: '用户登录'
-    });
+    alert('用户未登录');
+    // Navigation.push({
+    //   screen: 'User.Login',
+    //   title: '用户登录'
+    // });
   }
   login(arg){
     //登录
@@ -35,7 +45,7 @@ class User{
     })
     .then((response) => response.json())
     .then((responseData) => {
-      const {status,message,token,id,username,head_id};
+      const {status,token,id,username,head_id} = responseData.data;
       if(responseData.status == 0){
         self.setToken(token);    //设置token
         self.setUserInfo({id:id,head_id:head_id,username:username});        //存储用户数据
@@ -43,8 +53,6 @@ class User{
         alert(responseData.message);
       }
     });
-
-
 
   }
 
@@ -65,7 +73,7 @@ class User{
     })
     .then((response) => response.json())
     .then((responseData) => {
-      const {status,message,token,id,username,head_id};
+      const {status,token,id,username,head_id} = responseData.data;
       if(responseData.status == 0){
         self.setToken(token);
         self.setUserInfo({id:id,head_id:head_id,username:username});
@@ -86,8 +94,6 @@ class User{
     for( var info in arg){
       args.push({key:info,value:arg[info]});
     }
-    return global.Storage.setBatchData(args)；
+    return global.Storage.setBatchData(args)
   }
 }
-
-global.user = new User();

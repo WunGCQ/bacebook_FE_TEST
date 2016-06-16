@@ -2,7 +2,6 @@ import config from '../../config';
 /**
  * Created by wungcq on 16/5/15.
  */
-console.log(config.rootUrl);
 export default {
   users:[
     {

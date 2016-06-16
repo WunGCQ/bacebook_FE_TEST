@@ -82,7 +82,7 @@ var STYLE_ORIGIN = {
   username: {
     fontSize: 18,
     marginBottom: 2,
-    marginTop: 10,
+    marginTop: 0,
     textAlign: 'left',
   },
   overview: {
@@ -104,16 +104,16 @@ var STYLE_ORIGIN = {
   btn: {
     position: 'absolute',
     right: 15,
-    top: 24,
+    top: 22,
     width: 55,
-    height: 26,
+    height: 28,
     borderRadius: 4,
     overflow: 'hidden',
   },
   btn_text: {
-    fontSize: 11,
+    fontSize: 12,
     textAlign:'center',
-    lineHeight:18,
+    lineHeight:20,
   }
 
 };

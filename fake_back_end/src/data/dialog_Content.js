@@ -35,7 +35,7 @@ export default {
     {
       from: 1,
       contentType: 'image',
-      content: users.users[1].avatar,
+      content: users.me.avatar,
       time: time(),
     },
     {
