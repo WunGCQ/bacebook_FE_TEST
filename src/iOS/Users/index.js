@@ -21,7 +21,7 @@ import UserCell from './UserCell';
 import config from '../../../config';
 import ICONS from '../../common/icons';
 
-const REQUEST_URL = config.rootUrl+'/user/';
+const REQUEST_URL = config.rootUrl+'/users/friendships/';
 
 var lastId = null;
 
@@ -118,7 +118,7 @@ export default class MainList extends Component {
   goDialogView(user){
     if(user.id == -1){ //
       this.props.navigator.push({
-        screen: 'Users.Add.List',
+        screen: 'Users.Add',
         title: '新的朋友',
       });
     }else { //regular
