@@ -4,19 +4,11 @@ import { registerScreens } from './src/screens';
 import ICONS from './src/common/icons';
 import COLORS from './src/common/colors';
 import config from './config';
+import User from './src/common/user';
 
 
 registerScreens(); // this is where you register all of your app's screens
 
-(()=>{
-  fetch(config.rootUrl+'/user')
-    .then((response) => response.json())
-    .then((responseData) => {
-      global.SELF = responseData.me;
-      
-    })
-    .done();
-})();
 // start the app
 Navigation.startTabBasedApp({
   tabs: [

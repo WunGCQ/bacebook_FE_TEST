@@ -34,7 +34,7 @@ export default class UserHead extends Component {
     }
     this.state = {
       dataSource: arr,
-      head_id: global.SELF.head_id,
+      head_id: global.USER.head_id,
     };
 
   }
@@ -70,8 +70,8 @@ export default class UserHead extends Component {
 
   }
 
-  pick(){
-    this.setState({head_id})
+  pick(head_id){
+    this.setState({head_id:head_id});
   }
 
 }

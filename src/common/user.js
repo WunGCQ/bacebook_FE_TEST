@@ -6,50 +6,72 @@ import Store from 'react-native-store';
 import config from '../../config';
 
 import React, {Component, AsyncStorage } from 'react-native';
+import GEVENT from './GEVENT';
 
 const token = null;
 
 const DB = {
     'user': Store.model('user'),
-}
+    'token': Store.model('token'),
+};
 
 export default class User {
   constructor(){
+
     DB.user.find().then((res)=>{
       if(res && res.length > 0){
         var user_model = res[0];
         for(var i in user_model){
           this[i] = user_model[i];
         }
+        this.freshToken();
       }else{
-        DB.user.add({
-          id: 1,
-          token: '2333',
-          username: '老中医',
-          head_id: 'head_1',
-        })
+        this.notLogin();
       }
     })
-    // DB.user.add({
-    //   id: 1,
-    //   token: '2333',
-    //   username: '老中医',
-    //   head_id: 'head_1',
-    // }).then(()=>{
-    //
-    // });
   }
-  goLoginView(){
-    alert('用户未登录');
-    // Navigation.push({
-    //   screen: 'User.Login',
-    //   title: '用户登录'
-    // });
+
+  hasLogin(){
+    GEVENT.emit('user.hasLogin');
   }
+
+  notLogin(){
+    GEVENT.emit('user.notLogin');
+  }
+
+  onLogin(){
+    GEVENT.emit('user.onLogin');
+    this.hasLogin();
+  }
+
+  onLogout(){
+    GEVENT.emit('user.onLogout');
+  }
+
+  getSelfInfo(){
+    var self = this;
+    return fetch(config.rootUrl+ '/users/0',{
+      head:{
+        Authorization: this.token,
+        contentType:'json'
+      }
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      if(responseData.message == 'success'){
+        self.setUserInfo(responseData.data).done((res)=>{
+          self.onLogin();
+        }); //存储用户数据
+      } else {
+        alert(responseData.message);
+      }
+    });
+  }
+
   login(arg){
     //登录
     var self = this;
-    return fetch(config.rootUrl+'/login',{
+    return fetch(config.rootUrl+'/users/sessions',{
       method: 'POST',
       body:JSON.stringify({
         telephone: arg.telephone,
@@ -58,10 +80,12 @@ export default class User {
     })
     .then((response) => response.json())
     .then((responseData) => {
-      const {status,token,id,username,head_id} = responseData.data;
-      if(responseData.status == 0){
-        self.setToken(token);    //设置token
-        self.setUserInfo({id:id,head_id:head_id,username:username});        //存储用户数据
+      if(responseData.message == 'success'){
+        let lastFresh = Date.now();
+        let tokenInfo = Object.assign({},responseData.data,{lastFresh:lastFresh});
+        self.setToken(tokenInfo).done(()=>{
+          self.getSelfInfo.call(self);
+        });
       } else {
         alert(responseData.message);
       }
@@ -76,20 +100,14 @@ export default class User {
     var self = this;
     return fetch(config.rootUrl+'/logout',{
       method: 'POST',
-      body:JSON.stringify({
-        telephone: arg.telephone,
-        password: arg.password,
-      }),
       head:{
         token: self.token,
       }
     })
     .then((response) => response.json())
     .then((responseData) => {
-      const {status,token,id,username,head_id} = responseData.data;
-      if(responseData.status == 0){
-        self.setToken(token);
-        self.setUserInfo({id:id,head_id:head_id,username:username});
+      if(responseData.message == 'success'){
+        DB.token.destroy().then(self.onLogout);
       } else {
         alert(responseData.message);
       }
@@ -97,16 +115,52 @@ export default class User {
 
   }
 
-  setToken(token){
-    this.token = token;
-    setItem('token',token);
+
+
+  freshToken(){
+    var self = this;
+    DB.token.find().then((tokenInfo)=>{
+      var now = Date.now();
+      if(tokenInfo){
+        if(now - (tokenInfo.lastFresh - 0) < (tokenInfo.expires_at - 0)) {
+          //还未过期
+          self.fetchNewTokenByFreshToken(tokenInfo.refresh_token)
+            .then((res)=> {
+              if(res.message=='success'){
+                self.setToken(res.data).then(self.getSelfInfo);
+              }else {
+                alert(res.message);
+              }
+            });
+          } else {
+            //已过期
+            alert('对不起，您的会话已过期，请重新登录!');
+            self.notLogin();
+          }
+        } else {
+          alert('对不起，您的会话已过期，请重新登录!');
+          self.notLogin();
+        }
+    })
   }
 
-  setUserInfo(arg){
-    var args = [];
-    for( var info in arg){
-      args.push({key:info,value:arg[info]});
+  fetchNewTokenByFreshToken(refreshToken){
+    return fetch(config.rootUrl+'/users/sessions',{
+      method:'PUT',
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      })
+    }).then(res=>res.json());
+  }
+
+  setToken(tokenInfo) {
+    return DB.token.add(tokenInfo);
+  }
+
+  setUserInfo(user_model){
+    for(var i in user_model){
+      this[i] = user_model[i];
     }
-    return global.Storage.setBatchData(args)
+    return DB.user.add(user_model);
   }
 }

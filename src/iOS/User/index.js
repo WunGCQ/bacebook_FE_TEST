@@ -29,6 +29,7 @@ import ICONS from '../../common/icons';
 import naviStyle from '../../common/navigatorStyle';
 import config from '../../../config';
 import User from '../../common/user';
+import GEVENT from '../../common/GEVENT';
 
 
 export default class UserCenter extends Component {
@@ -43,22 +44,27 @@ export default class UserCenter extends Component {
       }),
       loaded: false,
     };
-    this.props.navigator.setOnNavigatorEvent(()=>{
-      this.props.navigator.toggleTabs({
-        to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
-        animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
-      });
-    });
+    this.goLoginView = this.goLoginView.bind(this);
+    this.fetchUserData = this.fetchUserData.bind(this);
+    this.bindUserListener();
   }
 
   componentDidMount() {
 
-    this.fetchUserData();
-    if(!global.user){
-      global.user = new User();
+
+    var self = this;
+    if(!global.USER){
+      global.USER = new User();
     }
 
   }
+
+  bindUserListener(){
+    var self = this;
+    GEVENT.on('user.hasLogin',self.fetchUserData);
+    GEVENT.on('user.onLogout',self.goLoginView);
+  }
+
 
   fetchUserData() {
     fetch(config.rootUrl+'/user')

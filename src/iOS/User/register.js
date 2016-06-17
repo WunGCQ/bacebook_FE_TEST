@@ -35,7 +35,6 @@ export default class Login extends Component {
       password:'',
     };
     this.props.navigator.setOnNavigatorEvent(()=>{
-      alert('!!');
       this.props.navigator.toggleTabs({
         to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
         animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true

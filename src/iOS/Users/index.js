@@ -20,6 +20,7 @@ import UserCell from './UserCell';
 
 import config from '../../../config';
 import ICONS from '../../common/icons';
+import GEVENT from '../../common/GEVENT';
 
 const REQUEST_URL = config.rootUrl+'/users/friendships/';
 
@@ -56,10 +57,12 @@ export default class MainList extends Component {
       }),
       loaded: false,
     };
+    this.fetchData = this.fetchData.bind(this);
+    GEVENT.on('user.hasLogin', this.fetchData);
   }
 
   componentDidMount() {
-    this.fetchData();
+
   }
 
   fetchData() {

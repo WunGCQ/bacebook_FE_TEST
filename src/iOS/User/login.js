@@ -83,6 +83,12 @@ export default class Login extends Component {
              onPress={this.doLogin.bind(this)}>
             <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>登录</Text>
           </TouchableHighlight>
+          <TouchableHighlight
+            style={{height:40,borderRadius:4, marginTop: 20,overflow:'hidden',backgroundColor:COLORS.ACTIVE_ICON_COLOR}}
+             underlayColor={COLORS.ACTIVE_ICON_COLOR}
+             onPress={this.goRegister.bind(this)}>
+            <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>注册新账号</Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -94,6 +100,13 @@ export default class Login extends Component {
   setPassword(password){
     this.setState({password: password});
   }
+  goRegister(){
+    this.props.navigator.push({
+      screen: 'User.Register', // unique ID registered with Navigation.registerScreen
+      passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+      animated: true, // does the push have transition animation or does it happen immediately (optional)
+    });
+  }
 
   getTypingStyle(){
     return this.state.typing? S.wrapper_typing : S.wrapper;
@@ -103,7 +116,7 @@ export default class Login extends Component {
     var self = this;
     var {telephone, password} = this.state;
 
-    user.login(telephone, password).done((response)=>{
+    global.USER.login(telephone, password).done((response)=>{
       self.props.navigator.push({
         screen: 'Main.List',
         title: '聊天',

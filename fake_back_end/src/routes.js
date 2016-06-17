@@ -15,6 +15,34 @@ myRouter.get('/user', function *(next) {
     this.response.body = JSON.stringify(fake_users);
 });
 
+myRouter.get('/logout', function *(next) {
+    this.response.body = JSON.stringify({message:'success'});
+});
+
+
+myRouter.post('/users/sessions', function *(next) {
+   var tokenInfo = Object.assign({},{
+     "access_token": "alsghsdklghsdjklgsedlafsadfsadfasdfasd",
+      "expires_at": "7200",
+      "refresh_token": "345623vgr89_tsdmotc431905g3dfgasdfasf"
+   });
+   this.response.body = JSON.stringify({message:'success',data:tokenInfo});
+});
+
+myRouter.put('/users/sessions', function *(next) {
+   var tokenInfo = Object.assign({},{
+     "access_token": "alsghsdklghsdjklgsedlafsadfsadfasdfasd",
+      "expires_at": "7200",
+      "refresh_token": "345623vgr89_tsdmotc431905g3dfgasdfasf"
+   });
+   this.response.body = JSON.stringify({message:'success',data:tokenInfo});
+});
+
+myRouter.get('/users/0', function *(next) {
+   var userInfo = Object.assign({},fake_users.me);
+   this.response.body = JSON.stringify({message:'success',data:userInfo});
+});
+
 myRouter.get('/users/friendships', function *(next) {
     this.response.body = JSON.stringify(fake_users);
 });

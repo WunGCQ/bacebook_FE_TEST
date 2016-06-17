@@ -33,7 +33,7 @@ export default class DialogSingle extends Component {
 
 
   render() {
-    if(this.props.user.id == global.SELF.id){
+    if(this.props.user.id == global.USER.id){
         return this.me(meStyleObj);
     }
     else {

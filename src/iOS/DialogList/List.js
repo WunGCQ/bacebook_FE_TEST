@@ -19,6 +19,7 @@ import naviStyle from '../../common/navigatorStyle';
 import DialogListCell from './DialogCell';
 
 import config from '../../../config';
+import GEVENT from '../../common/GEVENT';
 
 const REQUEST_URL = config.rootUrl+'/dialogs/';
 
@@ -35,10 +36,44 @@ export default class MainList extends Component {
       }),
       loaded: false,
     };
+
+    if(!global.USER){
+      this.bindUserEvent.call(this);
+    }
+
+  }
+
+  bindUserEvent(){
+    GEVENT.on('user.hasLogin',this.fetchData.bind(this));
+    GEVENT.on('user.onLogin',()=>{
+      // this.props.navigator.switchToTab({
+      //   tabIndex: 0 // (optional) if missing, this screen's tab will become selected
+      // });
+      // this.props.navigator.resetTo({
+      //   screen: 'Main.List', // unique ID registered with Navigation.registerScreen
+      //   passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+      //   animated: true, // does the push have transition animation or does it happen immediately (optional)
+      // });
+      this.props.navigator.popToRoot({
+        animated: true // does the pop have transition animation or does it happen immediately (optional)
+      });
+    });
+
+    GEVENT.on('user.notLogin',()=>{
+      // this.props.navigator.switchToTab({
+      //   tabIndex: 2 // (optional) if missing, this screen's tab will become selected
+      // });
+      this.props.navigator.push({
+        screen: 'User.Login', // unique ID registered with Navigation.registerScreen
+        passProps: {}, // simple serializable object that will pass as props to the pushed screen (optional)
+        animated: true, // does the push have transition animation or does it happen immediately (optional)
+      });
+    });
   }
 
   componentDidMount() {
-    this.fetchData();
+    var self = this;
+
   }
 
   fetchData() {
