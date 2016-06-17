@@ -70,9 +70,8 @@ export default class UserHead extends Component {
 
   }
 
-  pick(head_id){
-    this.setState({head_id:head_id});
-    //ajax!!
+  pick(){
+    this.setState({head_id})
   }
 
 }

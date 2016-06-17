@@ -15,16 +15,29 @@ const DB = {
 
 export default class User {
   constructor(){
-    DB.user.add({
-      id: 1,
-      token: '2333',
-      username: '老中医',
-      head_id: 'head_1',
-    }).then(()=>{
-        DB.user.find().then((res)=>{
-          var str = JSON.stringify(arguments);
+    DB.user.find().then((res)=>{
+      if(res && res.length > 0){
+        var user_model = res[0];
+        for(var i in user_model){
+          this[i] = user_model[i];
+        }
+      }else{
+        DB.user.add({
+          id: 1,
+          token: '2333',
+          username: '老中医',
+          head_id: 'head_1',
         })
+      }
     })
+    // DB.user.add({
+    //   id: 1,
+    //   token: '2333',
+    //   username: '老中医',
+    //   head_id: 'head_1',
+    // }).then(()=>{
+    //
+    // });
   }
   goLoginView(){
     alert('用户未登录');

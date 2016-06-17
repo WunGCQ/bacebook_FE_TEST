@@ -54,7 +54,10 @@ export default class UserCenter extends Component {
   componentDidMount() {
 
     this.fetchUserData();
-    global.user = new User();
+    if(!global.user){
+      global.user = new User();
+    }
+
   }
 
   fetchUserData() {
