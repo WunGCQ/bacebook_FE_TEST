@@ -23,7 +23,7 @@ import COLORS from '../../common/colors';
 import KeyboardEvents from 'react-native-keyboardevents';
 var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
-export default class Login extends Component {
+export default class ModifyUserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,15 +31,12 @@ export default class Login extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       typing:false,
-      telephone:'',
-      password:'',
+      telephone: global.USER.telephone,
+      password: '',
+      confirm_password: '',
+      username: global.USER.username,
     };
-    this.props.navigator.setOnNavigatorEvent(()=>{
-      this.props.navigator.toggleTabs({
-        to: 'shown', // required, 'hidden' = hide navigation bar, 'shown' = show navigation bar
-        animated: false // does the toggle have transition animation or does it happen immediately (optional). By default animated: true
-      });
-    });
+
   }
 
   componentDidMount() {
@@ -67,6 +64,8 @@ export default class Login extends Component {
               style={S.input}
                placeholder="输入手机号"
                onChangeText={this.setVal.bind(this,'telephone')}
+               editable={false}
+               value={this.state.telephone}
                keyboardType={'default'}></TextInput>
           </View>
           <View  style={S.row} >
@@ -76,6 +75,7 @@ export default class Login extends Component {
             <TextInput
               style={S.input}
                placeholder="输入昵称"
+               value={this.state.username}
                onChangeText={this.setVal.bind(this,'username')}
                keyboardType={'default'}></TextInput>
           </View>
@@ -87,6 +87,7 @@ export default class Login extends Component {
               style={S.input}
               placeholder="输入密码"
               secureTextEntry={true}
+              value={this.state.password}
               onChangeText={this.setVal.bind(this,'password')}
               keyboardType={'default'}
               ></TextInput>
@@ -98,6 +99,7 @@ export default class Login extends Component {
             <TextInput
               style={S.input}
               placeholder="确认密码"
+              value={this.state.confirm_password}
               secureTextEntry={true}
               onChangeText={this.setVal.bind(this,'confirm_password')}
               keyboardType={'default'}
@@ -107,9 +109,17 @@ export default class Login extends Component {
             <TouchableHighlight
               style={{height:40,borderRadius:4, marginTop: 5,overflow:'hidden',backgroundColor:COLORS.ACTIVE_ICON_COLOR}}
                underlayColor={COLORS.ACTIVE_ICON_COLOR}
-               onPress={this.doRegsiter.bind(this)}>
-              <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>注册</Text>
+               onPress={this.doModify.bind(this)}>
+              <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>修改资料</Text>
             </TouchableHighlight>
+
+            <TouchableHighlight
+              style={{height:40,borderRadius:4, marginTop: 10,overflow:'hidden',backgroundColor:COLORS.COMMON_GRAY}}
+               underlayColor={COLORS.ACTIVE_ICON_COLOR}
+               onPress={this.giveUpModify.bind(this)}>
+              <Text style={{lineHeight:28,fontSize:16,color: '#fff',textAlign:'center'}}>放弃修改</Text>
+            </TouchableHighlight>
+
           </View>
         </View>
       </ScrollView>
@@ -126,21 +136,23 @@ export default class Login extends Component {
     return this.state.typing? S.wrapper_typing : S.wrapper;
   }
 
-  doRegsiter(){
-    var {telephone,username, password,confirm_password} = this.state;
+  doModify(){
+    var {telephone,username, password, confirm_password} = this.state;
+    var modifyArg = Object.assign({},{
+      telephone: telephone,
+      username: username,
+    });
+    if(password.length > 0){
+      modifyArg = Object.assign({},modifyArg,{password: password,confirm_password: confirm_password});
+    }
     fetch(config.rootUrl+'/users',{
       method: 'POST',
-      body:JSON.stringify({
-        telephone: telephone,
-        username: username,
-        password: password,
-        confirm_password: confirm_password
-      }),
+      body:JSON.stringify(modifyArg),
     })
     .then((response) => response.json())
     .then((responseData) => {
       if(responseData.message == 'success'){
-        alert('注册成功！请前往登录');
+        alert('修改信息成功~');
         this.props.navigator.pop();
         //user.login() 调用user单例
       } else {
@@ -148,6 +160,10 @@ export default class Login extends Component {
         //错误信息
       }
     })
+  }
+
+  giveUpModify(){
+    this.props.navigator.pop();
   }
 
 

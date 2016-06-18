@@ -122,7 +122,7 @@ export default class User {
     DB.token.find().then((tokenInfo)=>{
       var now = Date.now();
       if(tokenInfo){
-        if(now - (tokenInfo.lastFresh - 0) < (tokenInfo.expires_at - 0)) {
+        if(now - (tokenInfo.lastFresh - 0) < ((tokenInfo.expires_at - 0)*1000)) {
           //还未过期
           self.fetchNewTokenByFreshToken(tokenInfo.refresh_token)
             .then((res)=> {

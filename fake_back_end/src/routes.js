@@ -20,6 +20,11 @@ myRouter.get('/logout', function *(next) {
 });
 
 
+myRouter.post('/users/', function *(next) {
+  var userInfo = Object.assign({},fake_users.me);
+  this.response.body = JSON.stringify({message:'success',data:userInfo});
+});
+
 myRouter.post('/users/sessions', function *(next) {
    var tokenInfo = Object.assign({},{
      "access_token": "alsghsdklghsdjklgsedlafsadfsadfasdfasd",
