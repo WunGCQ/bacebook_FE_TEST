@@ -29,7 +29,7 @@ import KeyboardEvents from 'react-native-keyboardevents';
 var KeyboardEventEmitter = KeyboardEvents.Emitter;
 
 var REQUEST_URL = config.rootUrl+'/dialog';
-
+var ws = new WebSocket(config.chatHost);
 
 var lastId = null;
 export default class DialogSingle extends Component {
@@ -163,6 +163,7 @@ export default class DialogSingle extends Component {
   sendText(){
     if(this.state.text.length > 0){
       // alert(`send text : ${this.state.text}`);
+      ws.send(this.state.text);
       this.addMessage();
     }else {
       alert('请输入内容！');
