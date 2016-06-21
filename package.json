@@ -21,6 +21,8 @@
     "react-native-store": "^0.4.1",
     "react-native-vector-icons": "^2.0.2",
     "redux": "^3.5.2",
+    "socket.io": "^1.4.6",
+    "socket.io-client": "^1.4.6",
     "undefined": "^0.1.0"
   }
 }
