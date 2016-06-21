@@ -16,8 +16,8 @@ myRouter.get('/user', function *(next) {
     this.response.body = JSON.stringify(fake_users);
 });
 
-myRouter.get('/logout', function *(next) {
-    this.response.body = JSON.stringify({message:'success'});
+myRouter.post('/logout', function *(next) {
+    this.response.body = JSON.stringify({message:"success"});
 });
 
 

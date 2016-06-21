@@ -194,6 +194,7 @@ export default class User {
 
   setToken(tokenInfo) {
     var arr = Obj2Arr(tokenInfo);
+    alert(JSON.stringify(arr));
     return AsyncStorage.multiSet(arr);
   }
 

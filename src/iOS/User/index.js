@@ -163,7 +163,7 @@ export default class UserCenter extends Component {
   }
 
   doLogout(){
-    //user.logout().then(this.goLoginView.bind(this));
+    global.USER.logout();
     //调用全局单例
     //完成后跳转页面到登录
   }
