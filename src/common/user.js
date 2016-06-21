@@ -73,6 +73,10 @@ export default class User {
     var self = this;
     return fetch(config.rootUrl+'/users/sessions',{
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
       body:JSON.stringify({
         telephone: arg.telephone,
         password: arg.password
