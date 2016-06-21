@@ -23,6 +23,7 @@ import GEVENT from '../../common/GEVENT';
 
 const REQUEST_URL = config.rootUrl+'/dialogs/';
 
+
 var lastId = null;
 export default class MainList extends Component {
 
@@ -98,11 +99,13 @@ export default class MainList extends Component {
 
     console.log(this.props);
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.renderDialogCell.bind(this)}
-        style={styles.listView}
-      />
+      <View>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderDialogCell.bind(this)}
+            style={styles.listView}
+          />
+      </View>
     );
   }
 

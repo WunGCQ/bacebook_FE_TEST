@@ -10,6 +10,7 @@ import fake_dialog from './data/dialog_Content';
 var Router = require('koa-router');
 var myRouter = new Router();
 
+import './chat';
 
 myRouter.get('/user', function *(next) {
     this.response.body = JSON.stringify(fake_users);
