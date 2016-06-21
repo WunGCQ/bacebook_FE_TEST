@@ -177,7 +177,7 @@ export default class DialogSingle extends Component {
 
   addMessage(text=this.state.text){
     var obj = {
-      from: global.SELF.id,
+      from: global.USER.id,
       contentType: 'text',
       content: text,
       time: new Date().getTime(),
@@ -194,7 +194,7 @@ export default class DialogSingle extends Component {
 
   addImageMessage(imageURI){
     var obj = {
-      from: global.SELF.id,
+      from: global.USER.id,
       contentType: 'image',
       content: imageURI,
       time: new Date().getTime(),
