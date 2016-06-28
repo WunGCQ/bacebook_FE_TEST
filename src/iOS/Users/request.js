@@ -23,71 +23,51 @@ import ApplicationCell from './applicationCell';
 import config from '../../../config';
 import ICONS from '../../common/icons';
 import COLORS from '../../common/colors';
+import GEVENT from '../../common/GEVENT';
 
-const REQUEST_URL = config.rootUrl+'/users/friendships/applications';
-
+const REQUEST_URL = config.rootUrl+'/users/friendships/applications?history=true';
+const ACCEPT_URL = config.rootUrl+"/users/friendships/applications/"
 var lastId = null;
 
-export default class UserAdd extends Component {
+export default class UserRequest extends Component {
 
   static navigatorStyle = naviStyle;
 
   constructor(props) {
     super(props);
     this.state = {
-      addUser: null,
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
       id:'',
       loaded: true,
     };
   }
 
   componentDidMount() {
+    this.fetchData();
   }
 
   render() {
 
     return (
       <View style={S.container}>
-        <View style={S.input_wrapper}>
-          <TextInput
-            style={S.input_blur}
-            onChangeText={this.setId.bind(this)}
-            keyboardType='default'
-            keyboardAppearance='default'
-            placeholder="请输入用户的BackBook id"
-            onSubmitEditing={this.fetchData.bind(this)}
-            returnKeyType={'send'}
-            value={this.state.id}
-            />
 
-          <TouchableHighlight
-            style={S.send_btn}
-            onPress={this.fetchData.bind(this)}
-            underlayColor={COLORS.COMMON_GRAY}>
-            <Text style={S.send_btn_text}>{'发送'}</Text>
-          </TouchableHighlight>
+        <ListView
+          dataSource={this.state.dataSource}
+          style={S.result_wrapper}
+          renderRow={this.result.bind(this)}>
 
-        </View>
-        <View style={S.result_wrapper}>
-            {this.result()}
-        </View>
+        </ListView>
 
       </View>
     );
   }
 
-  result(){
-    const { addUser, loaded } = this.state;
-    if(!loaded){
-      return (<Text style={S.empty_result}>加载中...</Text>)
-    }
-    else if(!addUser){
-      return (<Text style={S.empty_result}>暂无结果</Text>)
-    }else{
+  result(M){
       return (
-        <ApplicationCell user={addUser} onSelect={this.doAdd.bind(this)}/>
-      )
-    }
+        <ApplicationCell user={M} onSelect={this.doAdd.bind(this,M.id, M.user_id)}/>
+      );
   }
 
   setId(id){
@@ -96,18 +76,10 @@ export default class UserAdd extends Component {
 
   fetchData(){
 
-    if(this.state.id == ''){
-      alert('请输入用户Backbook id！');
-      return;
-    }
-
     this.setState({loaded:false});
 
     fetch(REQUEST_URL,{
-      method:'POST',
-      body: JSON.stringify({
-        user_id:this.state.id,
-      }),
+      method:'GET',
       headers: {
         Authorization: global.USER.token,
         'Content-Type': 'application/json'
@@ -115,9 +87,10 @@ export default class UserAdd extends Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
+        console.log(responseData);
         if(responseData.message == 'success'){
           this.setState({
-            addUser: responseData.data,
+            dataSource: this.state.dataSource.cloneWithRows(responseData.data),
             loaded: true,
           });
         }
@@ -129,37 +102,31 @@ export default class UserAdd extends Component {
       .done();
   }
 
-  doAdd(){
-  //  fetch(REQUEST_URL,{
-  //    method:'POST',
-  //    body: JSON.stringify({
-  //      user_id:this.state.id,
-  //    }),
-  //    headers: {
-  //      Authorization: global.USER.token,
-  //      'Content-Type': 'application/json'
-  //    }
-  //  })
-  //    .then((response) => response.json())
-  //    .then((responseData) => {
-  //      if(responseData.message == 'success'){
-  //        this.setState({
-  //          addUser: responseData.data,
-  //          loaded: true,
-  //        });
-  //      }
-  //      else{
-  //        console.log(responseData);
-  //        alert(responseData.message);
-  //      }
-  //    })
-  //    .done();
-  //}
-  }
-
-
-
-
+  doAdd(id){
+      fetch(ACCEPT_URL+id,{
+        method:'PUT',
+        body: JSON.stringify({
+          "attitude": "accept"
+        }),
+        headers: {
+          Authorization: global.USER.token,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          if(responseData.message == 'success'){
+            alert('添加成功~');
+            this.props.navigator.pop();
+            GEVENT.emit('users.freshFriendShip');
+          }
+          else{
+            console.log(responseData);
+            alert(responseData.message);
+          }
+        })
+        .done();
+    }
 }
 
 var S = StyleSheet.create({

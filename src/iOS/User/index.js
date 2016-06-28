@@ -67,19 +67,14 @@ export default class UserCenter extends Component {
 
 
   fetchUserData() {
-    fetch(config.rootUrl+'/user')
-      .then((response) => response.json())
-      .then((responseData) => {
+
         this.setState({
           data: {
-            username: responseData.me.username,
-            avatar: responseData.me.avatar,
-            head_id: responseData.me.head_id,
+            username: global.USER.username,
+            head_id: global.USER.head_id,
           },
           loaded: true,
         });
-      })
-      .done();
   }
 
   render() {
@@ -128,12 +123,26 @@ export default class UserCenter extends Component {
     )
   }
 
+  // head_id = head_1
   renderLoadingView() {
+    var head_id = "head_1";
+    var username = "username";
     return (
-      <View style={S.container}>
-        <Text>
-          加载中...
-        </Text>
+      <View style={S.wrapper}>
+        <View style={S.container}>
+          <View style={S.top_user_block}>
+            <View style={S.avatar_wrapper}>
+              <Image
+                source={ICONS.AVATAR[head_id]}
+                style={S.avatar}/>
+            </View>
+            <View style={S.user_name_wrapper}>
+              <Text style={S.user_name}>{username}</Text>
+            </View>
+          </View>
+          {this.userMenuList()}
+          {this.logOutMenu()}
+        </View>
       </View>
     );
   }

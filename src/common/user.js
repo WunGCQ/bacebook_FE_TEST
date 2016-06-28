@@ -81,15 +81,17 @@ export default class User {
 
   getSelfInfo(){
     var self = this;
+    console.log(this.token);
     return fetch(config.rootUrl+ '/users/0',{
-      head:{
+      headers:{
         Authorization: this.token,
-        contentType:'json'
+        'Content-Type': 'application/json'
       }
     })
     .then((response) => response.json())
     .then((responseData) => {
       if(responseData.message == 'success'){
+        console.log(responseData);
         this.setUserInfo(responseData.data).done((res)=>{
           self.onLogin();
         }); //存储用户数据
@@ -106,7 +108,7 @@ export default class User {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body:JSON.stringify({
         telephone: arg.telephone,
@@ -123,6 +125,7 @@ export default class User {
           self.getSelfInfo.call(self);
         });
       } else {
+        console.log("success");
         alert(responseData.message);
       }
     });
@@ -171,7 +174,7 @@ export default class User {
             });
           } else {
             //已过期
-            DB.token.destroy().done(()=>{
+            AsyncStorage.clear().done(()=>{
               alert('对不起，您的会话已过期，请重新登录!');
               self.notLogin();
             })
@@ -192,13 +195,18 @@ export default class User {
       method:'PUT',
       body: JSON.stringify({
         refresh_token: refreshToken,
-      })
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     }).then(res=>res.json());
   }
 
   setToken(tokenInfo) {
+    this.token = tokenInfo.access_token;
     var arr = Obj2Arr(tokenInfo);
-    alert(JSON.stringify(arr));
+    //alert(JSON.stringify(arr));
     return AsyncStorage.multiSet(arr);
   }
 

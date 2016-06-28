@@ -10,6 +10,7 @@ import UserApplicationList from './iOS/Users/applications';
 import UserAdd from './iOS/Users/add';
 import UserHead from './iOS/User/head';
 import UserModify from './iOS/User/modify';
+import UserRequest from './iOS/Users/request'
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -22,5 +23,6 @@ export function registerScreens() {
   Navigation.registerComponent('Users.List', () => UserList);
   Navigation.registerComponent('Users.Add.List', () => UserApplicationList);//申请联系人列表
   Navigation.registerComponent('Users.Add', () => UserAdd);//添加联系人
+  Navigation.registerComponent('Users.Request', () => UserRequest);//用户申请
   Navigation.registerComponent('Main.Dialog.Single', () => DialogSingle);//聊天界面
 }

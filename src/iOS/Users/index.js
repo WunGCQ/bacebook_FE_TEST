@@ -31,6 +31,11 @@ const newUserCell = {
   head_id: 'newUser',
   username: '好友申请',
 };
+const FriendRequestCell = {
+  id: -2,
+  head_id: 'head_1',
+  username: '新的朋友',
+};
 export default class MainList extends Component {
 
   static navigatorStyle = naviStyle;
@@ -59,6 +64,7 @@ export default class MainList extends Component {
     };
     this.fetchData = this.fetchData.bind(this);
     GEVENT.on('user.hasLogin', this.fetchData);
+    GEVENT.on('users.freshFriendShip',this.fetchData);
   }
 
   componentDidMount() {
@@ -66,14 +72,21 @@ export default class MainList extends Component {
   }
 
   fetchData() {
-    fetch(REQUEST_URL)
+    fetch(REQUEST_URL+"?_="+Date.now(),{
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': global.USER.token,
+        'Content-Type': 'application/json'
+      }
+    })
       .then((response) => response.json())
       .then((responseData) => {
-        responseData.users.splice(0,-1,newUserCell);
-        lastId = responseData.users[responseData.users.length - 1].id;
-        responseData.users.forEach((d)=>{d.isLastChild = (d.id == lastId) });
+        responseData.data.splice(0,-1,newUserCell);
+        responseData.data.splice(0,-1,FriendRequestCell);
+        lastId = responseData.data[responseData.data.length - 1].id;
+        responseData.data.forEach((d)=>{d.isLastChild = (d.id == lastId) });
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.users),
+          dataSource: this.state.dataSource.cloneWithRows(responseData.data),
           loaded: true,
         });
       })
@@ -124,10 +137,18 @@ export default class MainList extends Component {
         screen: 'Users.Add',
         title: '新的朋友',
       });
-    }else { //regular
+    }
+    else if(user.id == -2){ //
+      this.props.navigator.push({
+        screen: 'Users.Request',
+        title: '好友请求',
+      });
+    }
+    else { //regular
       this.props.navigator.push({
         screen: 'Main.Dialog.Single',
         title: user.username,
+        passProps: user
       });
     }
 
