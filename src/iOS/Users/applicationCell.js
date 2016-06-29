@@ -19,6 +19,8 @@ import ICONS from '../../common/icons';
 export default class UserListCell extends Component {
   render(){
     const D = this.props.user;
+    D.head_id = D.head_id == undefined ?  "head_1" : D.head_id;
+    console.log(D);
     return (
       <View style={this.props.lastChild?S.lastChild:S.container}>
         <View style={S.avatar_wrapper}>
@@ -51,7 +53,7 @@ export default class UserListCell extends Component {
       )
     } else {
       return (
-        <TouchableHighlight style={S.waiting_button}>
+        <TouchableHighlight onPress={this.props.onSelect} style={S.waiting_button}>
           <Text style={S.waiting_button_text}>接受</Text>
         </TouchableHighlight>
       )

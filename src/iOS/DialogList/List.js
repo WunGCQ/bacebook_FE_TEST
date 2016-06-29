@@ -78,6 +78,7 @@ export default class MainList extends Component {
   }
 
   fetchData() {
+    return;
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {

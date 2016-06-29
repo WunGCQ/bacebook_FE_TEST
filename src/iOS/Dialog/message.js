@@ -27,7 +27,7 @@ export default class DialogSingle extends Component {
 
   static navigatorStyle = naviStyle;
 
-  constructor(props) {
+  constructor(props={contentType:'text'}) {
     super(props);
   }
 
@@ -70,7 +70,7 @@ export default class DialogSingle extends Component {
 
   other(S){
     let M = Object.assign({},this.props);
-    var dateObj = new Date(M.time);
+    var dateObj = new Date(M.created_at);
     var time = dateObj.toLocaleTimeString();
     var date = dateObj.toLocaleDateString();
 
@@ -96,13 +96,13 @@ export default class DialogSingle extends Component {
   }
 
   content(S,M){
-    if(M.contentType == 'text'){
+    if(M.contentType == 'text' || !M.contentType){
       return (
         <View style={S.text_wrapper}>
           <Text style={S.text}>{M.content}</Text>
         </View>
       )
-    }else {
+    }else if(M.contentType == 'image') {
       return (
         <View style={S.img_wrapper}>
           <Image

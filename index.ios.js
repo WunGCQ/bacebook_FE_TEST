@@ -35,21 +35,21 @@ registerScreens(); // this is where you register all of your app's screens
   //   console.log(e.code, e.reason);
   // };
   // console.log(ws);
-  if (!window.location) {
-      // App is running in simulator
-    window.navigator.userAgent = 'ReactNative';
-  }
+  //if (!window.location) {
+  //    // App is running in simulator
+  //  window.navigator.userAgent = 'ReactNative';
+  //}
 
   // This must be below your `window.navigator` hack above
-  const io = require('socket.io-client/socket.io');
-  const socket = io('http://127.0.0.1:8088', {
-    transports: ['websocket'] // you need to explicitly tell it to use websockets
-  });
-
-  socket.on('connect', () => {
-    console.log('connected!');
-    alert('!!');
-  });
+  //const io = require('socket.io-client/socket.io');
+  //const socket = io('http://127.0.0.1:8088', {
+  //  transports: ['websocket'] // you need to explicitly tell it to use websockets
+  //});
+  //
+  //socket.on('connect', () => {
+  //  console.log('connected!');
+  //  alert('!!');
+  //});
 
 })();
 

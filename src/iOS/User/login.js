@@ -116,7 +116,7 @@ export default class Login extends Component {
     var self = this;
     var {telephone, password} = this.state;
 
-    global.USER.login(telephone, password).done((response)=>{
+    global.USER.login({telephone, password}).done((response)=>{
       self.props.navigator.push({
         screen: 'Main.List',
         title: '聊天',
